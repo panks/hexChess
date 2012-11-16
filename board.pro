@@ -110,7 +110,7 @@ queen(X1,Y1,D,MM,MT,L):-rook(X1,Y1,D,MM,MT1,L),bishop(X1,Y1,D,MT1,MT,L).
 queen(X1,Y1,D,MM,MT,L):-MT = MM.
 
 %pawn
-
+pawn(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L = 1),MT = [[X2,Y2]|MM].
 
 %king
 king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
@@ -126,84 +126,6 @@ king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT
 king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
 king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
 
-/*                       X2 == X1-3,Y2 == Y1+2,
-%correctness of moves herX2 == X1-3,Y2 == Y1+1,e..
-pawnW(X1,Y1,X2,Y2,D,MM,MTX2 == X1-3,Y2 == Y1-1,):-X2 == X1,Y2 == Y+1,get(X2,Y2,P,D),P >19.
-pawnW(X1,Y1,X2,Y2,D,MM,MT):-X1 == 2,X2 == X1,Y1 > 1,Y1 <9,Y2 == Y+2,get(X2,Y2,P,D),P >19.
-pawnW(X1,Y1,X2,Y2,D,MM,MT):-X1 == 2,X2 == X1,Y1 > 3,Y1 <7,Y2 == Y+3,get(X2,Y2,P,D),P >19.
-
-pawnW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1,Y2 == Y+1,get(X2,Y2,P,D),P ==1.
-pawnW(X1,Y1,X2,Y2,D,MM,MT):-X1 == 2,X2 == X1,Y1 > 1,Y1 <9,Y2 == Y+2,get(X2,Y2,P,D),P ==1.
-pawnW(X1,Y1,X2,Y2,D,MM,MT):-X1 == 2,X2 == X1,Y1 > 3,Y1 <7,Y2 == Y+3,get(X2,Y2,P,D),P ==1.
-
-% TODO add attack moves!!
-
-
-%% rook moves
-rookW(X1,Y1,X2,Y2,D,MM,MT):-X1 == X2,Y2 = Y1+1,X2<7,get(X2,Y2,P,D),(P ==1;P >19),rookW(X2,Y2,X3,Y3,D,MM,MT).
-
-rookW(X1,Y1,X2,Y2,D,MM,MT):-Y1 - Y2 == X1 - X2,get(X2,Y2,P,D),P >19.
-rookW(X1,Y1,X2,Y2,D,MM,MT):-Y1 - Y2 == X2 - X1,get(X2,Y2,P,D),P >19.
-rookW(X1,Y1,X2,Y2,D,MM,MT):-Y2 - Y1 == X1 - X2,get(X2,Y2,P,D),P >19.
-
-rookW(X1,Y1,X2,Y2,D,MM,MT):-Y1 - Y2 == X1 - X2,get(X2,Y2,P,D),P ==1.
-rookW(X1,Y1,X2,Y2,D,MM,MT):-Y1 - Y2 == X2 - X1,get(X2,Y2,P,D),P ==1.
-rookW(X1,Y1,X2,Y2,D,MM,MT):-Y2 - Y1 == X1 - X2,get(X2,Y2,P,D),P ==1.
-
-%% knight moves
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1+2,Y2 == Y1-1,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1+2,Y2 == Y1+1,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1+1,Y2 == Y1-2,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1+1,Y2 == Y1+2,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-1,Y2 == Y1-3,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-1,Y2 == Y1+3,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-2,Y2 == Y1-3,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-2,Y2 == Y1+3,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-3,Y2 == Y1-2,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-3,Y2 == Y1+2,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-3,Y2 == Y1+1,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-3,Y2 == Y1-1,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
-
-%%king moves
-kingW(X1,Y1,X2,Y2,D):-X2 == X1-1,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-X2 == X1+1,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1+1,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,X2 == X1+1,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,X2 == X1-1,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1+1,X2 == X1+1,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1+1,X2 == X1-1,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1+2,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-2,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,X2 == X1+2,get(X2,Y2,P,D),P >19.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,X2 == X1-2,get(X2,Y2,P,D),P >19.
-
-kingW(X1,Y1,X2,Y2,D):-X2 == X1-1,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-X2 == X1+1,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1+1,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,X2 == X1+1,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,X2 == X1-1,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1+1,X2 == X1+1,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1+1,X2 == X1-1,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1+2,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-2,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,X2 == X1+2,get(X2,Y2,P,D),P ==1.
-kingW(X1,Y1,X2,Y2,D):-Y2 == Y1-1,X2 == X1-2,get(X2,Y2,P,D),P ==1.
-
-%%bishop 
-bishopW(X1,Y1,X2,Y2,D):-(X2 - X1)/(Y2 - Y1) == 2,get(X2,Y2,P,D),P ==1.
-bishopW(X1,Y1,X2,Y2,D):-(X1 - X2)/(Y2 - Y1) == 2,get(X2,Y2,P,D),P ==1.
-bishopW(X1,Y1,X2,Y2,D):-(Y2 - Y1)/(X2 - X1) == 2,get(X2,Y2,P,D),P ==1.
-bishopW(X1,Y1,X2,Y2,D):-(Y1 - Y2)/(X2 - X1) == 2,get(X2,Y2,P,D),P ==1.
-bishopW(X1,Y1,X2,Y2,D):-(Y1 - Y2)mod 2 == 0,get(X2,Y2,P,D),P ==1.
-
-%queen
-queenW(X1,Y1,X2,Y2,D):-bishopW(X1,Y1,X2,Y2,D).
-queenW(X1,Y1,X2,Y2,D):-rookW(X1,Y1,X2,Y2,D).
-
-*/
-%and rest so on ...
 %%%
 
 % user input
@@ -223,3 +145,36 @@ iterY([H|T],Wei):-evalWeight(H,R1),iterY(T,R2),Wei = R1*R2.
 evalWeight(H,W):-W = H.
 */
 
+play(Turn,Board):-chooseMove(Board,Turn,BoardUp),Turn1 is Turn +1,endGame(BoardUp,Turn1),!,play(Turn1,BoardUp).
+
+%%fill this ; check this for mate!!!
+endGame(Board,Turn).
+
+%%choosing!!
+chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(0,10,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
+
+iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,J,Board),Score1 > Score,I1 is I+1,
+													   iterateOverBoard(Score1,Depth,X1a,Y1a,X2a,Y2a,T,Var,I1,1,Board).
+iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,Board),I1 is I+1,
+													   iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,T,Var,I1,1,Board).													  
+iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,Board).
+													   
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd),eval(Se,NewB),Se > S,Jn is J+1,
+                                                 iterateOverY(Se,D,I,J,Xd,Yd,T,V,I,Jn,Board).
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd),eval(Se,NewB),Jn is J+1,
+                                                 iterateOverY(S,D,X1,X2,X2,Y2,T,V,I,Jn,Board).													   
+iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board).
+
+%%write for eval
+eval(Score ,[]).
+eval(Score,[H|T]):-evalY(S1,H),eval(S2,T),Stmp is S1+S2,Score is Stmp. 
+
+evalY(S,[]).
+evalY(S,[H|T]):-H >19,Snew is (H - 20),evalY(Snext,T),Stmp is Snew + Snext,S is Stmp.
+evalY(S,[H|T]):-H >9,Snew is (H - 10),evalY(Snext,T),Stmp is Snew + Snext,S is Stmp.
+evalY(S,[H|T]):-H < 10,Snew is 0,evalY(Snext,T),Stmp is Snew + Snext,S is Stmp.
+
+/* EXPAND THIS TODO */
+
+%% write for findMove
+findMove(I,J,Board,V,D,NewB,Xd,Yd).
