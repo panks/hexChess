@@ -156,12 +156,13 @@ chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(0,1
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,J,Board),Score1 > Score,I1 is I+1,
 													   iterateOverBoard(Score1,Depth,X1a,Y1a,X2a,Y2a,T,Var,I1,1,Board).
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,Board),I1 is I+1,
-													   iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,T,Var,I1,1,Board).													  
+													   iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,T,Var,I1,1,Board).	
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,Board).
-													   
-iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd),eval(Se,NewB),Se > S,Jn is J+1,
+iterateOverBoard(Score,0,X1,Y1,X2,Y2,[],Var,Board).
+
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),eval(Se,NewB),St is Se+Sout,Se > St,Jn is J+1,
                                                  iterateOverY(Se,D,I,J,Xd,Yd,T,V,I,Jn,Board).
-iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd),eval(Se,NewB),Jn is J+1,
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),Jn is J+1,
                                                  iterateOverY(S,D,X1,X2,X2,Y2,T,V,I,Jn,Board).													   
 iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board).
 
@@ -177,4 +178,10 @@ evalY(S,[H|T]):-H < 10,Snew is 0,evalY(Snext,T),Stmp is Snew + Snext,S is Stmp.
 /* EXPAND THIS TODO */
 
 %% write for findMove
-findMove(I,J,Board,V,D,NewB,Xd,Yd).
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp is V*10,king(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout == Eval,Xb = Xd,Yb = Yd.
+getBest(I,J,[H|T],Board,Xb,Yb,V,D,Val):-[C,D] = H,move(I,J,C,D,Board,Bnew),V1 is V+1,D1 is D-1,
+              %Struck with recursive path ahead here!!                                  %iterateOverBoard(0,D1,X1,Y1,X2,Y2,Board,V1,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp),
+                                                getBest(I,J,T,Board,Xb,Yb,V,D).
+
+
+getBest(I,J,[],Board,Xb,Yb,V).
