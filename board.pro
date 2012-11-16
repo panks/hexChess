@@ -74,53 +74,95 @@ set_Y(Y,P,H,Z):-setY(Y,P,H,[],Z).
 setY(1,P,[H|B],T,Re):-append(T,[P],Re1),append(Re1,B,Re).%Re1 is [T|P],Re is [Re1|B].
 setY(Y,P,[H|B],T,Re):-Y1 is Y-1,setY(Y1,P,B,[T|H],Re).
 
-%correctness of moves here..
-pawnW(X1,Y1,X2,Y2,D):-X2 == X1,Y2 == Y+1,get(X2,Y2,P,D),P >19.
-pawnW(X1,Y1,X2,Y2,D):-X1 == 2,X2 == X1,Y1 > 1,Y1 <9,Y2 == Y+2,get(X2,Y2,P,D),P >19.
-pawnW(X1,Y1,X2,Y2,D):-X1 == 2,X2 == X1,Y1 > 3,Y1 <7,Y2 == Y+3,get(X2,Y2,P,D),P >19.
+%%%
+%rook
+rook(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):- MT = MM.
 
-pawnW(X1,Y1,X2,Y2,D):-X2 == X1,Y2 == Y+1,get(X2,Y2,P,D),P ==1.
-pawnW(X1,Y1,X2,Y2,D):-X1 == 2,X2 == X1,Y1 > 1,Y1 <9,Y2 == Y+2,get(X2,Y2,P,D),P ==1.
-pawnW(X1,Y1,X2,Y2,D):-X1 == 2,X2 == X1,Y1 > 3,Y1 <7,Y2 == Y+3,get(X2,Y2,P,D),P ==1.
+%bishop
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):- MT = MM.
+
+%knight
+knight(X1,Y1,D,MM,MT,L):-X2 is X1+2,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1+2,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-2,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-2,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-3,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+%knight(X1,Y1,D,MM,MT,L):-MT = MM. MT = [[X2,Y2]|MM]
+
+%queen
+queen(X1,Y1,D,MM,MT,L):-rook(X1,Y1,D,MM,MT1,L),bishop(X1,Y1,D,MT1,MT,L).
+queen(X1,Y1,D,MM,MT,L):-MT = MM.
+
+%pawn
+
+
+%king
+king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+
+/*                       X2 == X1-3,Y2 == Y1+2,
+%correctness of moves herX2 == X1-3,Y2 == Y1+1,e..
+pawnW(X1,Y1,X2,Y2,D,MM,MTX2 == X1-3,Y2 == Y1-1,):-X2 == X1,Y2 == Y+1,get(X2,Y2,P,D),P >19.
+pawnW(X1,Y1,X2,Y2,D,MM,MT):-X1 == 2,X2 == X1,Y1 > 1,Y1 <9,Y2 == Y+2,get(X2,Y2,P,D),P >19.
+pawnW(X1,Y1,X2,Y2,D,MM,MT):-X1 == 2,X2 == X1,Y1 > 3,Y1 <7,Y2 == Y+3,get(X2,Y2,P,D),P >19.
+
+pawnW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1,Y2 == Y+1,get(X2,Y2,P,D),P ==1.
+pawnW(X1,Y1,X2,Y2,D,MM,MT):-X1 == 2,X2 == X1,Y1 > 1,Y1 <9,Y2 == Y+2,get(X2,Y2,P,D),P ==1.
+pawnW(X1,Y1,X2,Y2,D,MM,MT):-X1 == 2,X2 == X1,Y1 > 3,Y1 <7,Y2 == Y+3,get(X2,Y2,P,D),P ==1.
+
+% TODO add attack moves!!
+
 
 %% rook moves
-rookW(X1,Y1,X2,Y2,D):-X1 == X2,Y2 <= 9,Y2 >=1,X2<7,get(X2,Y2,P,D),P >19.
-rookW(X1,Y1,X2,Y2,D):-X1 == X2,Y2 <= 9,Y2 >=1,X2<7,get(X2,Y2,P,D),P == 1.
+rookW(X1,Y1,X2,Y2,D,MM,MT):-X1 == X2,Y2 = Y1+1,X2<7,get(X2,Y2,P,D),(P ==1;P >19),rookW(X2,Y2,X3,Y3,D,MM,MT).
 
-rookW(X1,Y1,X2,Y2,D):-Y1 - Y2 == X1 - X2,get(X2,Y2,P,D),P >19.
-rookW(X1,Y1,X2,Y2,D):-Y1 - Y2 == X2 - X1,get(X2,Y2,P,D),P >19.
-rookW(X1,Y1,X2,Y2,D):-Y2 - Y1 == X1 - X2,get(X2,Y2,P,D),P >19.
+rookW(X1,Y1,X2,Y2,D,MM,MT):-Y1 - Y2 == X1 - X2,get(X2,Y2,P,D),P >19.
+rookW(X1,Y1,X2,Y2,D,MM,MT):-Y1 - Y2 == X2 - X1,get(X2,Y2,P,D),P >19.
+rookW(X1,Y1,X2,Y2,D,MM,MT):-Y2 - Y1 == X1 - X2,get(X2,Y2,P,D),P >19.
 
-rookW(X1,Y1,X2,Y2,D):-Y1 - Y2 == X1 - X2,get(X2,Y2,P,D),P ==1.
-rookW(X1,Y1,X2,Y2,D):-Y1 - Y2 == X2 - X1,get(X2,Y2,P,D),P ==1.
-rookW(X1,Y1,X2,Y2,D):-Y2 - Y1 == X1 - X2,get(X2,Y2,P,D),P ==1.
+rookW(X1,Y1,X2,Y2,D,MM,MT):-Y1 - Y2 == X1 - X2,get(X2,Y2,P,D),P ==1.
+rookW(X1,Y1,X2,Y2,D,MM,MT):-Y1 - Y2 == X2 - X1,get(X2,Y2,P,D),P ==1.
+rookW(X1,Y1,X2,Y2,D,MM,MT):-Y2 - Y1 == X1 - X2,get(X2,Y2,P,D),P ==1.
 
 %% knight moves
-knightW(X1,Y1,X2,Y2,D):-X2 == X1+2,Y2 == Y1-1,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1+2,Y2 == Y1+1,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1+1,Y2 == Y1-2,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1+1,Y2 == Y1+2,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-1,Y2 == Y1-3,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-1,Y2 == Y1+3,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-2,Y2 == Y1-3,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-2,Y2 == Y1+3,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-3,Y2 == Y1-2,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-3,Y2 == Y1+2,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-3,Y2 == Y1+1,get(X2,Y2,P,D),P ==1.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-3,Y2 == Y1-1,get(X2,Y2,P,D),P ==1.
-
-knightW(X1,Y1,X2,Y2,D):-X2 == X1+2,Y2 == Y1-1,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1+2,Y2 == Y1+1,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1+1,Y2 == Y1-2,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1+1,Y2 == Y1+2,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-1,Y2 == Y1-3,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-1,Y2 == Y1+3,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-2,Y2 == Y1-3,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-2,Y2 == Y1+3,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-3,Y2 == Y1-2,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-3,Y2 == Y1+2,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-3,Y2 == Y1+1,get(X2,Y2,P,D),P >19.
-knightW(X1,Y1,X2,Y2,D):-X2 == X1-3,Y2 == Y1-1,get(X2,Y2,P,D),P >19.
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1+2,Y2 == Y1-1,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1+2,Y2 == Y1+1,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1+1,Y2 == Y1-2,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1+1,Y2 == Y1+2,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-1,Y2 == Y1-3,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-1,Y2 == Y1+3,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-2,Y2 == Y1-3,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-2,Y2 == Y1+3,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-3,Y2 == Y1-2,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-3,Y2 == Y1+2,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-3,Y2 == Y1+1,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
+knightW(X1,Y1,X2,Y2,D,MM,MT):-X2 == X1-3,Y2 == Y1-1,get(X2,Y2,P,D),(P ==1;P >19),MT = [[X2,Y2]].
 
 %%king moves
 kingW(X1,Y1,X2,Y2,D):-X2 == X1-1,get(X2,Y2,P,D),P >19.
@@ -157,15 +199,27 @@ bishopW(X1,Y1,X2,Y2,D):-(Y1 - Y2)/(X2 - X1) == 2,get(X2,Y2,P,D),P ==1.
 bishopW(X1,Y1,X2,Y2,D):-(Y1 - Y2)mod 2 == 0,get(X2,Y2,P,D),P ==1.
 
 %queen
-queenW(X1,Y1,X2,Y2,D):-bishopW(X1,Y1,X2,Y2,D),rookW(X1,Y1,X2,Y2,D).
+queenW(X1,Y1,X2,Y2,D):-bishopW(X1,Y1,X2,Y2,D).
+queenW(X1,Y1,X2,Y2,D):-rookW(X1,Y1,X2,Y2,D).
 
+*/
 %and rest so on ...
 %%%
 
 % user input
 inputLoop(X):-read(Y),print(Y),loop(Y).
 loop(Y):-Y \== 42,read(Y1),print(Y1),loop(Y1).
+/*
+%%%
+%generate weight of the pieces...
+testWeight(Wei):-big(D),getWeight(D,Wei).
 
+getWeight(D,Weight):-iterX(D,Weight).
+iterX([],wei).
+iterX([H|T],wei):-iterY(H,wei1),iterX(T,wei2),wei = wei1*wei2.
 
-
+iterY([],Wei).
+iterY([H|T],Wei):-evalWeight(H,R1),iterY(T,R2),Wei = R1*R2.
+evalWeight(H,W):-W = H.
+*/
 
