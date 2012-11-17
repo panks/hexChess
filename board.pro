@@ -158,7 +158,7 @@ evalWeight(H,W):-W = H.
 
 
 
-play(Turn Board):-read(X), splitInput(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn is Turn +1, chooseMove(NewBoard, Turn, NewBoard2), Turn is Turn + 1, play(Turn, NewBoard2). 
+play(Turn,Board):-read(X), splitInput(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn is Turn +1, chooseMove(NewBoard, Turn, NewBoard2), Turn is Turn + 1, play(Turn, NewBoard2). 
 
 
 ki(k).
@@ -212,7 +212,7 @@ splitInput([X|[B|[R|D]]], X1, Y1, X2, Y2, Turn, Board):-   (
                                                 )
                                                                  )
                                       )
-                ) X1 = Xa, Y1 = Ya, X2 = C, Y2 = R.
+                ), X1 = Xa, Y1 = Ya, X2 = C, Y2 = R.
 
 checkforcolor(T1, ValIn, ValOut):- ( isBlack(T1) -> ValOut is ValIn + 10 ; ValOut = ValIn ).
 
@@ -223,18 +223,18 @@ checkforcolor(T1, ValIn, ValOut):- ( isBlack(T1) -> ValOut is ValIn + 10 ; ValOu
 %%fill this ; check this for mate!!!
 endGame(Board,Turn).
 
-testChooseMove(A):-big1(B),iterateOverBoard(A,10,X1,Y1,X2,Y2,Board,T,1,1,B).
+testChooseMove(A):-big1(B),iterateOverBoard(A,10,X1,Y1,X2,Y2,B,T,1,1,B),print(X1),print(X2),print(Y1),print(Y2).
 
 %%choosing!!
 chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
 
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,1,Board),I1 is I+1,
-                                                               iterateOverBoard(Score2,Depth,X1a,Y1a,X2a,Y2a,T,Var,I1,1,Board),Score1 > Score2,
-                                                               Score = Score1,X1 = X1a,X2 = X2a,Y1 = Y1a,Y2 = Y2a.
-iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,1,Board),I1 is I+1,
-                                                               iterateOverBoard(Score2,Depth,X1,Y1,X2,Y2,T,Var,I1,1,Board),Score = Score2.
-iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,I,J,Board):-S is 0,Score = S.
-iterateOverBoard(Score,0,X1,Y1,X2,Y2,[],Var,I,J,Board):-S is 0,Score = S.
+                                                               iterateOverBoard(Score2,Depth,_,_,_,_,T,Var,I1,1,Board),Score1 > Score2,
+                                                               Score is Score1,X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.
+iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,_,_,_,_,H,Var,I,1,Board),I1 is I+1,
+                                                               iterateOverBoard(Score2,Depth,X1,Y1,X2,Y2,T,Var,I1,1,Board),Score is Score2.
+iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,I,J,Board):-S is 0,Score is S.
+iterateOverBoard(Score,0,X1,Y1,X2,Y2,[],Var,I,J,Board):-S is 0,Score is S.
 
 iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),Jn is J+1,
                                                  iterateOverY(Sout1,D,I,J,Xd,Yd,T,V,I,Jn,Board),Sout1 < Sout,
@@ -244,7 +244,7 @@ iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,
 iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board):-S1 is 0,S is S1.
 
 %%write for eval
-testEval(Score,T):-big(B),eval(Score,T,B).
+testEval(Score,T):-big1(B),eval(Score,T,B).
 
 eval(Score,T1,[H|T]):-evalY(S1,T1,H),eval(S2,T1,T),Stmp is S1+S2,Score is Stmp. 
 eval(Score,T,[]):-S is 0,Score is S.
@@ -256,16 +256,22 @@ evalY(S,T1,[]):-S1 is 0,S = S1.
 /* EXPAND THIS TODO */
 
 %% write for findMove
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp is V*10,P == tmp,king(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout = Eval,Xd = Xb,Yd = Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+1,P == tmp,pawn(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout = Eval,Xd = Xb,Yd = Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+3,P == tmp,knight(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout = Eval,Xd = Xb,Yd = Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+5,P == tmp,bishop(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout = Eval,Xd = Xb,Yd = Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+7,P == tmp,rook(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout = Eval,Xd = Xb,Yd = Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+9,P == tmp,queen(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout = Eval,Xd = Xb,Yd = Yb.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp is V*10,P == Tmp,king(I,J,D,[],MT,V),
+                                         getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+1,P == tmp,pawn(I,J,D,[],MT,V),
+                                         getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+3,P == tmp,knight(I,J,D,[],MT,V),
+                                         getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+5,P == tmp,bishop(I,J,D,[],MT,V),
+                                         getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+7,P == tmp,rook(I,J,D,[],MT,V),
+                                         getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+9,P == tmp,queen(I,J,D,[],MT,V),
+                                         getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
 findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-Sout is 0.
 
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+1,V1 is V2 mod 2, V1 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
-                                          iterateOverBoard(Sn,D1,X1,Y1,X2,Y2,Bnew,V1,1,1,Bnew),Score = Sn+Sc,getBest(I,J,T,Board,Xb,Yb,V,D,Snext),
-                                          Score > Snext,Xb = X1,Yb = Y1. 
+                                          iterateOverBoard(Sn,D1,X1,Y1,X2,Y2,Bnew,V1,1,1,Bnew),Score is Sn+Sc,getBest(I,J,T,Board,Xb,Yb,V,D,Snext),
+                                          Score > Snext,Xb is X1,Yb is Y1. 
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-getBest(I,J,T,Board,Xb,Yb,V,D,Score).
-getBest(I,J,[],Board,Xb,Yb,V,Score):-S is 0,Score = S.
+getBest(I,J,[],Board,Xb,Yb,V,Score):-S is 0,Score is S.
