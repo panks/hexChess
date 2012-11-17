@@ -152,7 +152,73 @@ iterY([H|T],Wei):-evalWeight(H,R1),iterY(T,R2),Wei = R1*R2.
 evalWeight(H,W):-W = H.
 */
 
-play(Turn,Board):-chooseMove(Board,Turn,BoardUp),Turn1 is Turn +1,endGame(BoardUp,Turn1),!,play(Turn1,BoardUp).
+%play(Turn,Board):-chooseMove(Board,Turn,BoardUp),Turn1 is Turn +1,endGame(BoardUp,Turn1),!,play(Turn1,BoardUp).
+
+% input format : ['piece','row','column] eg: [k,b,5]
+
+
+
+play(Turn Board):-read(X), splitInput(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn is Turn +1, chooseMove(NewBoard, Turn, NewBoard2), Turn is Turn + 1, play(Turn, NewBoard2). 
+
+
+ki(k).
+qu(q).
+ro(r).
+kn(k).
+bi(b).
+pa(p).
+
+one(a).
+two(b).
+three(c).
+four(d).
+five(e).
+six(f).
+seven(g).
+eight(h).
+nine(i).
+
+isBlack(0).
+
+splitInput([X|[B|[R|D]]], X1, Y1, X2, Y2, Turn, Board):-   (
+                ki(X) -> P = 'king', Val = 10;    (
+                                            qu(X) -> P='queen', Val = 19;     (
+                                      ro(X) -> P='rook', Val = 17 ;    (
+                                                        kn(X) -> P='knight', Val = 13;     (
+                                                                        bi(X) -> P='bishop', Val = 15 ;     (
+                                                                                          pa(X) -> P ='pawn', Val = 11 ; write('invalid piece'), P='', Val = 0
+                                                                                    )
+                                                                       )
+                                                        )
+                                                                        )
+                                            )
+                ), T1 is Turn mod 2,checkforcolor(T1, Val, Val2) , get(Xa, Ya, Val2, Board), 
+                
+                (
+                one(B) -> C = 1 ;    (
+                                            two(B) -> C = 2;     (
+                                                                    three(B) -> C = 3 ;    (
+                                                  four(B) -> C = 4;     (
+                                                             five(B) -> C = 5 ;    (
+                                                                          six(B) -> C = 6;     (
+                                                                                    seven(B) -> C = 7 ;     (
+                                                             eight(B) -> C = 8 ;    (
+                                                                          nine(B) -> C = 9; write('not a valid column number'), C=0
+                                                                          )
+                                                            )
+                                                                                    )
+                                                                          )
+                                                            )
+                                                )
+                                                                 )
+                                      )
+                ) X1 = Xa, Y1 = Ya, X2 = C, Y2 = R.
+
+checkforcolor(T1, ValIn, ValOut):- ( isBlack(T1) -> ValOut is ValIn + 10 ; ValOut = ValIn ).
+
+
+
+
 
 %%fill this ; check this for mate!!!
 endGame(Board,Turn).
