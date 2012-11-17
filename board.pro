@@ -81,11 +81,11 @@ testSet(X,Y,P,Dn):-big(D),set(X,Y,P,D,Dn).
 %set pos in board
 set(X,Y,P,D,Dn):-setX(X,Y,P,D,[],Dn).%last 2 are buffers, next to D is the result!!
 setX(1,Y,P,[H|J],T,Re):-set_Y(Y,P,H,Z),append(T,[Z],Re1),append(Re1,J,Re).
-setX(X,Y,P,[H|J],T,Re):-X1 is X-1,setX(X1,Y,P,J,[T|H],Re).
+setX(X,Y,P,[H|J],T,Re):-X1 is X-1,append(T,[H],Tnew),setX(X1,Y,P,J,Tnew,Re).
 
 set_Y(Y,P,H,Z):-setY(Y,P,H,[],Z).
 setY(1,P,[H|B],T,Re):-append(T,[P],Re1),append(Re1,B,Re).%Re1 is [T|P],Re is [Re1|B].
-setY(Y,P,[H|B],T,Re):-Y1 is Y-1,setY(Y1,P,B,[T|H],Re).
+setY(Y,P,[H|B],T,Re):-Y1 is Y-1,append(T,H,Tnew),setY(Y1,P,B,Tnew,Re).
 
 %%%
 %rook
