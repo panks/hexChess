@@ -183,10 +183,16 @@ evalY(S,[H|T]):-H < 10,Snew is 0,evalY(Snext,T),Stmp is Snew + Snext,S is Stmp.
 /* EXPAND THIS TODO */
 
 %% write for findMove
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp is V*10,king(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout == Eval,Xb = Xd,Yb = Yd.
-getBest(I,J,[H|T],Board,Xb,Yb,V,D,Val):-[C,D] = H,move(I,J,C,D,Board,Bnew),V1 is V+1,D1 is D-1,
-              %Struck with recursive path ahead here!!                                  %iterateOverBoard(0,D1,X1,Y1,X2,Y2,Board,V1,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp),
-                                                getBest(I,J,T,Board,Xb,Yb,V,D).
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp is V*10,P == tmp,king(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout < Eval,Xb = Xd,Yb = Yd.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+1,P == tmp,pawn(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout < Eval,Xb = Xd,Yb = Yd.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+3,P == tmp,knight(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout < Eval,Xb = Xd,Yb = Yd.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+5,P == tmp,bishop(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout < Eval,Xb = Xd,Yb = Yd.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+7,P == tmp,rook(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout < Eval,Xb = Xd,Yb = Yd.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),tmp1 is V*10,tmp1 is tmp+9,P == tmp,queen(I,J,D,[],MT,V),getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout < Eval,Xb = Xd,Yb = Yd.
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout).
+
+getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[C,D] = H,move(I,J,C,D,Board,Bnew),V1 is V+1,D1 is D-1,eval(Sc,Bnew),
+                                                  iterateOverBoard(Sn,D1,X1,Y1,X2,Y2,Bnew,V1,1,1,Bnew),Score = Sn+Sc,getBest(I,J,T,Board,Xb,Yb,V,D).
 
 
 getBest(I,J,[],Board,Xb,Yb,V).
