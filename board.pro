@@ -19,7 +19,7 @@ big(
   [21,1,1,1,1,1,1,1,21],
   [27,21,1,1,1,1,1,21,27],
   [0,25,21,1,1,1,21,23,0],
-  [0,0,23,21,.,21,25,0,0],
+  [0,0,23,21,1,21,25,0,0],
   [0,0,0,25,25,29,0,0,0],
   [0,0,0,0,20,0,0,0,0]
 ]).
@@ -150,23 +150,26 @@ play(Turn,Board):-chooseMove(Board,Turn,BoardUp),Turn1 is Turn +1,endGame(BoardU
 %%fill this ; check this for mate!!!
 endGame(Board,Turn).
 
+testChooseMove(A):-big(B),iterateOverBoard(0,10,X1,Y1,X2,Y2,Board,T,1,1,B).
+
 %%choosing!!
-chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(0,10,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
+chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(0,3,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
 
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,J,Board),Score1 > Score,I1 is I+1,
 													   iterateOverBoard(Score1,Depth,X1a,Y1a,X2a,Y2a,T,Var,I1,1,Board).
-iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,Board),I1 is I+1,
+iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,Board),I1 is I+1,
 													   iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,T,Var,I1,1,Board).	
-iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,Board).
-iterateOverBoard(Score,0,X1,Y1,X2,Y2,[],Var,Board).
+iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,I,J,Board).
+iterateOverBoard(Score,0,X1,Y1,X2,Y2,[],Var,I,J,Board).
 
-iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),eval(Se,NewB),St is Se+Sout,Se > St,Jn is J+1,
-                                                 iterateOverY(Se,D,I,J,Xd,Yd,T,V,I,Jn,Board).
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),S > Sout,Jn is J+1,
+                                                 iterateOverY(Sout,D,I,J,Xd,Yd,T,V,I,Jn,Board).
 iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),Jn is J+1,
                                                  iterateOverY(S,D,X1,X2,X2,Y2,T,V,I,Jn,Board).													   
 iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board).
 
 %%write for eval
+testEval(Score):-big(B),eval(Score,B).
 eval(Score ,[]).
 eval(Score,[H|T]):-evalY(S1,H),eval(S2,T),Stmp is S1+S2,Score is Stmp. 
 
