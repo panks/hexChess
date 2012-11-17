@@ -70,17 +70,17 @@ testGet(X,Y,Z):-big(D),get(X,Y,Z,D).
 
 %get pos from board
 get(X,Y,P,D):-getX(X,Y,P,D).
-getX(1,Y,P,[H|_]):-getY(Y,P,H).
-getX(X,Y,P,[H|J]):-X1 is X-1,getX(X1,Y,P,J).
+getX(1,Y,P,[H|_]):-getY(Y,P1,H),P is P1.
+getX(X,Y,P,[H|J]):-X1 is X-1,getX(X1,Y,P1,J),P is P1.
 
-getY(1,P,[H|_]):-P = H.
-getY(Y,P,[H|K]):-Y1 is Y-1,getY(Y1,P,K).
+getY(1,P,[H|_]):-P is H.
+getY(Y,P,[H|K]):-Y1 is Y-1,getY(Y1,P1,K),P is P1.
 
 testSet(X,Y,P,Dn):-big(D),set(X,Y,P,D,Dn).
 
 %set pos in board
 set(X,Y,P,D,Dn):-setX(X,Y,P,D,[],Dn).%last 2 are buffers, next to D is the result!!
-setX(1,Y,P,[H|J],T,Re):-set_Y(Y,P,H,Z),append(T,[Z	],Re1),append(Re1,J,Re).
+setX(1,Y,P,[H|J],T,Re):-set_Y(Y,P,H,Z),append(T,[Z],Re1),append(Re1,J,Re).
 setX(X,Y,P,[H|J],T,Re):-X1 is X-1,setX(X1,Y,P,J,[T|H],Re).
 
 set_Y(Y,P,H,Z):-setY(Y,P,H,[],Z).
@@ -89,33 +89,33 @@ setY(Y,P,[H|B],T,Re):-Y1 is Y-1,setY(Y1,P,B,[T|H],Re).
 
 %%%
 %rook
-rook(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
-rook(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
-rook(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
-rook(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
-rook(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
-rook(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
+rook(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
 rook(X1,Y1,D,MM,MT,L):- MT = MM.
 
 %bishop
-bishop(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
-bishop(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
-bishop(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
-bishop(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
-bishop(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
-bishop(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
+bishop(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
 bishop(X1,Y1,D,MM,MT,L):- MT = MM.
 
 %knight
-knight(X1,Y1,D,MM,MT,L):-X2 is X1+2,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-knight(X1,Y1,D,MM,MT,L):-X2 is X1+2,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-knight(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-knight(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-knight(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-knight(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-knight(X1,Y1,D,MM,MT,L):-X2 is X1-2,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-knight(X1,Y1,D,MM,MT,L):-X2 is X1-2,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-knight(X1,Y1,D,MM,MT,L):-X2 is X1-3,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1+2,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1+2,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-2,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-2,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+knight(X1,Y1,D,MM,MT,L):-X2 is X1-3,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
 %knight(X1,Y1,D,MM,MT,L):-MT = MM. MT = [[X2,Y2]|MM]
 
 %queen
@@ -123,21 +123,21 @@ queen(X1,Y1,D,MM,MT,L):-rook(X1,Y1,D,MM,MT1,L),bishop(X1,Y1,D,MT1,MT,L).
 queen(X1,Y1,D,MM,MT,L):-MT = MM.
 
 %pawn
-pawn(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L = 1),MT = [[X2,Y2]|MM].
+pawn(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
 
 %king
-king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
-king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is p//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
+king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
 
 %%%
 
@@ -276,8 +276,8 @@ findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tm
                                          getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
 findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-Sout is 0.
 
-getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+1,V1 is V2 mod 2, V1 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
-                                          iterateOverBoard(Sn,D1,X1,Y1,X2,Y2,Bnew,V1,1,1,Bnew),Score is Sn+Sc,getBest(I,J,T,Board,Xb,Yb,V,D,Snext),
+getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+1,V1 is V2 mod 2, V3 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
+                                          iterateOverBoard(Sn,D1,X1,Y1,X2,Y2,Bnew,V3,1,1,Bnew),Score is Sn+Sc,getBest(I,J,T,Board,Xb,Yb,V,D,Snext),
                                           Score > Snext,Xb is X1,Yb is Y1. 
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-getBest(I,J,T,Board,Xb,Yb,V,D,Score).
 getBest(I,J,[],Board,Xb,Yb,V,Score):-S is 0,Score is S.
