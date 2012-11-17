@@ -31,6 +31,12 @@ big1(
   [1,21]
 ]).
 
+big2(
+[
+  [11],
+  [1]
+]).
+
 % A([a,v,c]).
 /*
 %%% get position here in X<Y matrix notation!!
@@ -223,7 +229,7 @@ checkforcolor(T1, ValIn, ValOut):- ( isBlack(T1) -> ValOut is ValIn + 10 ; ValOu
 %%fill this ; check this for mate!!!
 endGame(Board,Turn).
 
-testChooseMove(A):-big1(B),iterateOverBoard(A,10,X1,Y1,X2,Y2,B,T,1,1,B),print(X1),print(X2),print(Y1),print(Y2).
+testChooseMove(A):-big2(B),iterateOverBoard(A,10,X1,Y1,X2,Y2,B,1,1,1,B),print(X1),print(X2),print(Y1),print(Y2).
 
 %%choosing!!
 chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
@@ -256,17 +262,17 @@ evalY(S,T1,[]):-S1 is 0,S = S1.
 /* EXPAND THIS TODO */
 
 %% write for findMove
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp is V*10,P == Tmp,king(I,J,D,[],MT,V),
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp is V*10,P == Tmp,king(I,J,Board,[],MT,V),
                                          getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+1,P == tmp,pawn(I,J,D,[],MT,V),
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+1,P == Tmp,pawn(I,J,Board,[],MT,V),
                                          getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+3,P == tmp,knight(I,J,D,[],MT,V),
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+3,P == Tmp,knight(I,J,Board,[],MT,V),
                                          getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+5,P == tmp,bishop(I,J,D,[],MT,V),
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+5,P == Tmp,bishop(I,J,Board,[],MT,V),
                                          getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+7,P == tmp,rook(I,J,D,[],MT,V),
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+7,P == Tmp,rook(I,J,Board,[],MT,V),
                                          getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,D),Tmp1 is V*10,Tmp1 is Tmp+9,P == tmp,queen(I,J,D,[],MT,V),
+findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+9,P == Tmp,queen(I,J,Board,[],MT,V),
                                          getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
 findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-Sout is 0.
 
