@@ -238,28 +238,18 @@ iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Scor
                                                                iterateOverBoard(Score2,Depth,_,_,_,_,T,Var,I1,1,Board),Score1 > Score2,
                                                                Score is Score1,X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,_,_,_,_,H,Var,I,1,Board),I1 is I+1,
-                                                               iterateOverBoard(Score2,Depth,X1,Y1,X2,Y2,T,Var,I1,1,Board),Score is Score2.
+                                                               iterateOverBoard(Score2,Depth,X1a,Y1a,X2a,Y2a,T,Var,I1,1,Board),Score is Score2,
+                                                               X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,I,J,Board):-S is 0,Score is S.
 iterateOverBoard(Score,0,X1,Y1,X2,Y2,[],Var,I,J,Board):-S is 0,Score is S.
 
 iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),Jn is J+1,
-                                                 iterateOverY(Sout1,D,I,J,Xd,Yd,T,V,I,Jn,Board),Sout1 < Sout,
+                                                 iterateOverY(Sout1,D,I,J,_,_,T,V,I,Jn,Board),Sout1 < Sout,
                                                  S is Sout,X1  is I,X2 is Xd,Y1 is J,Y2 is Yd.
-iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),Jn is J+1,
-                                                 iterateOverY(S1,D,X1,X2,X2,Y2,T,V,I,Jn,Board),S is S1.   
-iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board):-S1 is 0,S is S1.
-
-%%write for eval
-testEval(Score,T):-big1(B),eval(Score,T,B).
-
-eval(Score,T1,[H|T]):-evalY(S1,T1,H),eval(S2,T1,T),Stmp is S1+S2,Score is Stmp. 
-eval(Score,T,[]):-S is 0,Score is S.
-
-evalY(S,T1,[H|T]):-H >=  T1*10,Snew is H mod 10,evalY(Snext,T1,T),Stmp is Snew + Snext,S is Stmp.
-evalY(S,T1,[H|T]):-H < 10,Snew is 0,evalY(Snext,T1,T),Stmp is Snew + Snext,S is Stmp.
-evalY(S,T1,[H|T]):-evalY(Snext,T1,T),Stmp is Snext + 0,S is Stmp.
-evalY(S,T1,[]):-S1 is 0,S = S1.
-/* EXPAND THIS TODO */
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,_,_,Sout),Jn is J+1,
+                                                 iterateOverY(S1,D,X1a,X2a,X2a,Y2a,T,V,I,Jn,Board),S is S1,
+                                                 X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.   
+iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board):-X1 is 1,X2 is 1,Y1 is 1,Y2 is 1,S1 is 0,S is S1.%hack!!!
 
 %% write for findMove
 findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp is V*10,P == Tmp,king(I,J,Board,[],MT,V),
@@ -276,12 +266,26 @@ findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tm
                                          getBest1(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
 findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout):-Sout is 0.
 
-getBest1(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,Xb is X1,Yb is Y1.%,getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score1),Score is Score1.
+getBest1(I,J,Bb,Board,Xb,Yb,V,D,Score):-getBest(I,J,Bb,Board,Xb1,Yb1,V,D,Score1),Score is Score1,Xb is Xb1,Yb is Yb1.
+getBest1(I,J,[H|_],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,Xb is X1,Yb is Y1,Score is 0.%,getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score1),Score is Score1.
+getBest1(I,J,[],Board,Xb,Yb,V,D,Score):-Score is 0.%,getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score1),Score is Score1.
 
 getBest(I,J,[],Board,Xb,Yb,V,Score):-S is 0,Score is S.
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+1,V1 is V2 mod 2, V3 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
-                                          %iterateOverBoard(Sn,D1,X1,Y1,X2,Y2,Bnew,V3,1,1,Bnew),Score is Sn+Sc,
+                                          iterateOverBoard(Sn,D1,_,_,_,_,Bnew,V3,1,1,Bnew),Score is Sn+Sc,
                                           getBest(I,J,T,Board,Xb,Yb,V,D,Snext),
-                                          Sc > Snext,%Score > Snext,
+                                          Score > Snext,
                                           Xb is X1,Yb is Y1. 
-getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-getBest(I,J,T,Board,Xb,Yb,V,D,Score).
+getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-getBest(I,J,T,Board,Xb1,Yb1,V,D,Score1),Xb is Xb1,Yb is Yb1,Score is Score1.
+
+%%write for eval
+testEval(Score,T):-big1(B),eval(Score,T,B).
+
+eval(Score,T1,[H|T]):-evalY(S1,T1,H),eval(S2,T1,T),Stmp is S1+S2,Score is Stmp. 
+eval(Score,T,[]):-S is 0,Score is S.
+
+evalY(S,T1,[H|T]):-H >=  T1*10,Snew is H mod 10,evalY(Snext,T1,T),Stmp is Snew + Snext,S is Stmp.
+evalY(S,T1,[H|T]):-H < 10,Snew is 0,evalY(Snext,T1,T),Stmp is Snew + Snext,S is Stmp.
+evalY(S,T1,[H|T]):-evalY(Snext,T1,T),Stmp is Snext + 0,S is Stmp.
+evalY(S,T1,[]):-S1 is 0,S = S1.
+/* EXPAND THIS TODO */
