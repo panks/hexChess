@@ -230,7 +230,7 @@ checkforcolor(T1, ValIn, ValOut):- ( isBlack(T1) -> ValOut is ValIn + 10 ; ValOu
 %%fill this ; check this for mate!!!
 endGame(Board,Turn).
 
-testChooseMove(A):-big2(B),iterateOverBoard(A,1,X1,Y1,X2,Y2,B,1,1,1,B),print(X1),nl,print(Y1),nl,print(X2),nl,print(Y2),nl.
+testChooseMove(A):-big3(B),iterateOverBoard(A,2,X1,Y1,X2,Y2,B,1,1,1,B),print(X1),nl,print(Y1),nl,print(X2),nl,print(Y2),nl.
 
 %%choosing!!
 chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
@@ -272,7 +272,7 @@ findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+7,
                                     getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
 findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+9,P == Tmp,queen(I,J,Board,[],MT,V),
                                     getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
-findMove(I,J,Board,V,D,Xd,Yd,Sout):-Xd is I,Yd is J,Sout is 0.%hack XXX
+findMove(I,J,Board,V,D,Xd,Yd,Sout):-Xd is I,Yd is J,Sout is -1.%hack XXX
 
 %getBest1(I,J,Bb,Board,Xb,Yb,V,D,Score):-getBest(I,J,Bb,Board,Xb1,Yb1,V,D,Score1),Score is Score1,Xb is Xb1,Yb is Yb1.
 %getBest1(I,J,[H|_],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,Xb is X1,Yb is Y1,Score is 0.%,getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score1),Score is Score1.
@@ -284,26 +284,31 @@ lisSize([],Cou):-Cou is 0.
 %getBest(I,J,[],Board,Xb,Yb,V,0).
 %getBest(I,J,Lis,Board,Xb,Yb,V,Score):-lisSize(Lis,Len),Len == 0,Score is 0,Xb is I,Yb is J.
 %getBest(I,J,[],Board,Xb,Yb,V,Score):-Xb is I,Yb is J,S is 0,Score is S,!.
-getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+1,V1 is V2 mod 2, V3 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
+getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+2,V1 is V2 mod 2, V3 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
                                           iterateOverBoard(Sn,D1,_,_,_,_,Bnew,V3,1,1,Bnew),Sc1 is Sn+Sc,
                                           %Sc1 is Sc,
                                           lisSize([H|T],Len),Len == 1,
                                           Score is Sc1,Xb is X1,Yb is Y1.
-getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+1,V1 is V2 mod 2, V3 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
+getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+2,V1 is V2 mod 2, V3 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
                                           iterateOverBoard(Sn,D1,_,_,_,_,Bnew,V3,1,1,Bnew),Sc1 is Sn+Sc,
                                           %Sc1 is Sc,
                                           getBest(I,J,T,Board,_,_,V,D,Snext),
                                           Sc1 >= Snext,Score is Sc1,Xb is X1,Yb is Y1. 
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-getBest(I,J,T,Board,Xb1,Yb1,V,D,Score1),Xb is Xb1,Yb is Yb1,Score is Score1.
 
-%%write for eval
 testEval(Score,T):-big1(B),eval(Score,T,B).
+%eval(Score,_,_):-random(Val),Val1 is Val *10,Score is round(Val1).
 
-eval(Score,T1,[H|T]):-evalY(S1,T1,H,1),eval(S2,T1,T),Stmp is S1+S2,Score is Stmp. 
-eval(Score,T,[]):-S is 0,Score is S.
+%%write for eval
+testEval(Score,T):-big3(B),eval(Score,T,B).
 
-evalY(S,T1,[H|T],V):-H >=  T1*10,H < 10+ T1*10,Snew1 is H mod 10,Snew is Snew1*V,V1 is V+1,evalY(Snext,T1,T,V),Stmp is Snew + Snext,S is Stmp.
-evalY(S,T1,[H|T],V):-H < 10,Snew is 0,V1 is V+1,evalY(Snext,T1,T,V1),Stmp is Snew + Snext,S is Stmp.
-evalY(S,T1,[H|T],V):-V1 is V+1,evalY(Snext,T1,T,V1),Stmp is Snext + 0,S is Stmp.
-evalY(S,T1,[],V):-S1 is 0,S = S1.
+eval(Score,T1,B):-evalX(Score,T1,B,1).
+
+evalX(Score,T1,[H|T],X):-evalY(S1,T1,H,X,1),X1 is X+1,evalX(S2,T1,T,X1),Stmp is S1+S2,Score is Stmp. 
+evalX(Score,T,[],X):-S is 0,Score is S.
+
+evalY(S,T1,[H|T],W,V):-H >=  T1*10,H < 10+ T1*10,Snew1 is H mod 10,Snew is Snew1*V*W,V1 is V+1,evalY(Snext,T1,T,V),Stmp is Snew + Snext,S is Stmp.
+evalY(S,T1,[H|T],W,V):-H < 10,Snew is V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
+evalY(S,T1,[H|T],W,V):-V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snext + 0,S is Stmp.
+evalY(S,T1,[],W,V):-S1 is 0,S = S1.
 /* EXPAND THIS TODO */
