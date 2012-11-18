@@ -235,7 +235,7 @@ testChooseMove(A):-big2(B),iterateOverBoard(A,1,X1,Y1,X2,Y2,B,1,1,1,B),print(X1)
 chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
 
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,1,Board),I1 is I+1,
-                                                               iterateOverBoard(Score2,Depth,_,_,_,_,T,Var,I1,1,Board),%Score1 > Score2,
+                                                               iterateOverBoard(Score2,Depth,_,_,_,_,T,Var,I1,1,Board),Score1 >= Score2,
                                                                Score is Score1,X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,_,_,_,_,H,Var,I,1,Board),I1 is I+1,
                                                                iterateOverBoard(Score2,Depth,X1a,Y1a,X2a,Y2a,T,Var,I1,1,Board),Score1 < Score2,Score is Score2,
@@ -244,10 +244,10 @@ iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,I,J,Board):-X1 is 1,X2 is 1,Y1 i
 iterateOverBoard(Score,0,X1,Y1,X2,Y2,[],Var,I,J,Board):-X1 is 1,X2 is 1,Y1 is 1,Y2 is 1,S is 0,Score is S.%hack !! XXX
 
 iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,Xd,Yd,Sout),Jn is J+1,
-                                                 iterateOverY(Sout1,D,I,J,_,_,T,V,I,Jn,Board),%Sout1 < Sout,
+                                                 iterateOverY(Sout1,D,I,J,_,_,T,V,I,Jn,Board),Sout1 <= Sout,
                                                  S is Sout,X1  is I,X2 is Xd,Y1 is J,Y2 is Yd.
 iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,NewB,_,_,Sout),Jn is J+1,
-                                                 iterateOverY(S1,D,X1a,Y1a,X2a,Y2a,T,V,I,Jn,Board),Sout1 > Sout,S is S1,
+                                                 iterateOverY(S1,D,X1a,Y1a,X2a,Y2a,T,V,I,Jn,Board),S1 > Sout,S is S1,
                                                  X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.   
 iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board):-X1 is 1,X2 is 1,Y1 is 1,Y2 is 1,S1 is 0,S is S1.%hack!!!
 
