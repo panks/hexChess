@@ -300,17 +300,26 @@ endGame(Board,Turn).
 testChooseMove(A):-big1(B),iterateOverBoard(A,2,X1,Y1,X2,Y2,B,1,1,1,B),print(X1),nl,print(Y1),nl,print(X2),nl,print(Y2),nl.
 
 %%choosing!!
-chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
+%chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
+chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1,oneMove(Board,T,D,M,3,2),maximumVal(X1,Y1,X2,Y2,_,M),move(X1,Y1,X2,Y2,Board,BoardUp).
 
-testOneMove(V,D,Im,Jm,M):-big2(B),oneMove(B,V,D,M,Im,Jm).
+testOneMove(V,D,Im,Jm,M):-big1(B),oneMove(B,V,D,M,Im,Jm).
+
+maximumVal(X1,Y1,X2,Y2,S,[]):-S is -1.
+maximumVal(X1,Y1,X2,Y2,S,[H|T]):-exMax(X1a,Y1a,X2a,Y2a,Sa,H),maximumVal(X1b,Y1b,X2b,Y2b,Sb,T),Sa >=Sb,X1 is X1a,Y1 is Y1a,X2 is X2a,Y2 is Y2a,S is Sa.
+maximumVal(X1,Y1,X2,Y2,S,[H|T]):-exMax(X1a,Y1a,X2a,Y2a,Sa,H),maximumVal(X1b,Y1b,X2b,Y2b,Sb,T),Sa<Sb,X1 is X1b,Y1 is Y1b,X2 is X2b,Y2 is Y2b, S is Sb.
+
+exMax(X1a,Y1a,X2a,Y2a,Sa,[]):-Sa is -1.
+exMax(X1a,Y1a,X2a,Y2a,Sa,[X1,Y1,X2,Y2,S]):-X1a is X1,Y1a is Y1,X2a is X2 , Y2a is Y2,Sa is S.
+
 oneMove(Board,Var,D,M,Imax,Jmax):-setof(Mov,loopX(1,1,Imax,Jmax,Board,Var,D,Mov),M).
 %oneMove1(Board,Var,D,Ar):-setof([X1,Y1,X2,Y2,Sout],findMove(X1,X2,Board,Var,D,X2,Y2,Sout),Ar).
 
 
 loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J<Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),J1 is J+1,loopY(I,J1,Imax,Jmax,Board,V,D,Ar1),Sout == -1,Ar = Ar1.%Ar = [[I,J,Xd,Yd,Sout]|Ar1].
 loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J==Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),Sout == -1,Ar = [].
-loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J<Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),J1 is J+1,loopY(I,J1,Imax,Jmax,Board,V,D,Ar1),Sout > -1,Ar = [[I,J,Xd,Yd,Sout]|Ar1].
-loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J==Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),Sout > -1,Ar = [[I,J,Xd,Yd,Sout]].
+loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J<Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),J1 is J+1,loopY(I,J1,Imax,Jmax,Board,V,D,Ar1),Sout > -1,Ar = [I,J,Xd,Yd,Sout|Ar1].
+loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J==Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),Sout > -1,Ar = [I,J,Xd,Yd,Sout].
 
 loopX(I,_,Imax,Jmax,Board,V,D,Ar):-I<Imax,loopY(I,1,Imax,Jmax,Board,V,D,Ar1),I1 is I+1,loopX(I1,1,Imax,Jmax,Board,V,D,Ar2),append(Ar1,Ar2,Ar).%Ar = [Ar1|Ar2].
 loopX(I,_,Imax,Jmax,Board,V,D,Ar):-I==Imax,loopY(I,1,Imax,Jmax,Board,V,D,Ar1),Ar = Ar1.
