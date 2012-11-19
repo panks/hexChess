@@ -302,9 +302,20 @@ testChooseMove(A):-big1(B),iterateOverBoard(A,2,X1,Y1,X2,Y2,B,1,1,1,B),print(X1)
 %%choosing!!
 chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
 
-oneMove(Board,Var,Ar):-setof(Va,oneMove1(Board,Var,Va),Ar).
-oneMove1(Board,Var,Ar):-setof([X1,Y1,X2,Y2],iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,Var,1,1,Board),Ar).
+testOneMove(V,D,Im,Jm,M):-big2(B),oneMove(B,V,D,M,Im,Jm).
+oneMove(Board,Var,D,M,Imax,Jmax):-setof(Mov,loopX(1,1,Imax,Jmax,Board,Var,D,Mov),M).
+%oneMove1(Board,Var,D,Ar):-setof([X1,Y1,X2,Y2,Sout],findMove(X1,X2,Board,Var,D,X2,Y2,Sout),Ar).
 
+
+loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J<Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),J1 is J+1,loopY(I,J1,Imax,Jmax,Board,V,D,Ar1),Sout == -1,Ar = Ar1.%Ar = [[I,J,Xd,Yd,Sout]|Ar1].
+loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J==Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),Sout == -1,Ar = [].
+loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J<Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),J1 is J+1,loopY(I,J1,Imax,Jmax,Board,V,D,Ar1),Sout > -1,Ar = [[I,J,Xd,Yd,Sout]|Ar1].
+loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J==Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),Sout > -1,Ar = [[I,J,Xd,Yd,Sout]].
+
+loopX(I,_,Imax,Jmax,Board,V,D,Ar):-I<Imax,loopY(I,1,Imax,Jmax,Board,V,D,Ar1),I1 is I+1,loopX(I1,1,Imax,Jmax,Board,V,D,Ar2),append(Ar1,Ar2,Ar).%Ar = [Ar1|Ar2].
+loopX(I,_,Imax,Jmax,Board,V,D,Ar):-I==Imax,loopY(I,1,Imax,Jmax,Board,V,D,Ar1),Ar = Ar1.
+
+/*
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,1,Board),I1 is I+1,
                                                                lisSize([H|T],Len),Len == 1,
                                                                Score is Score1,X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.
@@ -333,7 +344,7 @@ iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,_,_,Sout
                                                  iterateOverY(S1,D,X1a,Y1a,X2a,Y2a,T,V,I,Jn,Board),S is S1,Sout < S1,
                                                  X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a,lisSize([H|T],Len),Len > 1.                                                 
 %iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board):-X1 is I,X2 is I,Y1 is J,Y2 is J,S1 is 0,S is S1.%hack!!! XXX
-
+*/
 testFindMove(S,I,J,P,X,Y):-big1(B),findMove(I,J,B,P,2,X,Y,S).
 testSetOF(I,J,V,MT):-big1(Board),setof([X,Y],pawn(I,J,Board,X,Y,V),MT).
 
@@ -401,7 +412,7 @@ evalX(Score,T1,[H|T],X):-evalY(S1,T1,H,X,1),X1 is X+1,evalX(S2,T1,T,X1),Stmp is 
 evalX(Score,T,[],X):-S is 0,Score is S.
 
 evalY(S,T1,[H|T],W,V):-H >=  T1*10,H < 10+ T1*10,Snew1 is H mod 10,Snew is Snew1*V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
-evalY(S,T1,[H|T],W,V):-H < 10,Snew is V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
+evalY(S,T1,[H|T],W,V):-H < 10,Snew is H*V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
 evalY(S,T1,[H|T],W,V):-V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snext + 0,S is Stmp.
 evalY(S,T1,[],W,V):-S1 is 0,S = S1.
 /* EXPAND THIS TODO */
