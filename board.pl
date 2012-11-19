@@ -302,27 +302,36 @@ testChooseMove(A):-big1(B),iterateOverBoard(A,2,X1,Y1,X2,Y2,B,1,1,1,B),print(X1)
 %%choosing!!
 chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
 
+oneMove(Board,Var,Ar):-setof(Va,oneMove1(Board,Var,Va),Ar).
+oneMove1(Board,Var,Ar):-setof([X1,Y1,X2,Y2],iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,Var,1,1,Board),Ar).
+
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,1,Board),I1 is I+1,
                                                                lisSize([H|T],Len),Len == 1,
                                                                Score is Score1,X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,X1a,Y1a,X2a,Y2a,H,Var,I,1,Board),I1 is I+1,
                                                                iterateOverBoard(Score2,Depth,_,_,_,_,T,Var,I1,1,Board),Score1 >= Score2,
-                                                               Score is Score1,X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.
+                                                               Score is Score1,X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a,lisSize([H|T],Len),Len > 1.
 iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[H|T],Var,I,1,Board):-iterateOverY(Score1,Depth,_,_,_,_,H,Var,I,1,Board),I1 is I+1,
                                                                iterateOverBoard(Score2,Depth,X1a,Y1a,X2a,Y2a,T,Var,I1,1,Board),Score is Score2,
-                                                               X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.
+                                                               X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a,lisSize([H|T],Len),Len > 1,Score1 < Score2.
 %iterateOverBoard(Score,Depth,X1,Y1,X2,Y2,[],Var,I,J,Board):-X1 is I,X2 is I,Y1 is J,Y2 is J,S is 0,Score is S.%hack !! XXX
 iterateOverBoard(Score,0,X1,Y1,X2,Y2,_,Var,I,J,Board):-X1 is I,X2 is I,Y1 is J,Y2 is J,Score is 0.%hack !! XXX
 
 iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,Xd,Yd,Sout),Jn is J+1,
                                                  lisSize([H|T],Len),Len == 1,
                                                  S is Sout,X1  is I,X2 is Xd,Y1 is J,Y2 is Yd.
-iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,Xd,Yd,Sout),Jn is J+1,
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,_,_,Sout),Jn is J+1,
+                                                 iterateOverY(S1,D,X1a,Y1a,X2a,Y2a,T,V,I,Jn,Board),S is S1,Sout == -1,
+                                                 X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a,lisSize([H|T],Len),Len > 1.                                                 
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,X2a,Y2a,Sout),Jn is J+1,
+                                                 iterateOverY(S1,D,X1a,Y1a,_,_,T,V,I,Jn,Board),S is Sout,S1 == -1,
+                                                 X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a,lisSize([H|T],Len),Len > 1.                                                 
+iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,Xd,Yd,Sout),Jn is J+1,lisSize([H|T],Len),Len > 1,
                                                  iterateOverY(Sout1,D,I,J,_,_,T,V,I,Jn,Board),Sout >= Sout1,
                                                  S is Sout,X1  is I,X2 is Xd,Y1 is J,Y2 is Yd.
 iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,_,_,Sout),Jn is J+1,
-                                                 iterateOverY(S1,D,X1a,Y1a,X2a,Y2a,T,V,I,Jn,Board),S is S1,
-                                                 X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a.   
+                                                 iterateOverY(S1,D,X1a,Y1a,X2a,Y2a,T,V,I,Jn,Board),S is S1,Sout < S1,
+                                                 X1 is X1a,X2 is X2a,Y1 is Y1a,Y2 is Y2a,lisSize([H|T],Len),Len > 1.                                                 
 %iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board):-X1 is I,X2 is I,Y1 is J,Y2 is J,S1 is 0,S is S1.%hack!!! XXX
 
 testFindMove(S,I,J,P,X,Y):-big1(B),findMove(I,J,B,P,2,X,Y,S).
@@ -340,7 +349,7 @@ findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+7,
                                     getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.                                    
 findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+9,P == Tmp,setof([X,Y],queen(I,J,Board,X,Y,V),MT), 
                                     getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.                                    
-                                                                        
+findMove(I,J,Board,V,D,Xd,Yd,Sout):-Xd is I,Yd is J,Sout is -1.%hack XXX                                                                        
                                     /*
 %% write for findMove
 findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp is V*10,P == Tmp,king(I,J,Board,[],MT,V),
@@ -380,9 +389,9 @@ getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew)
                                           Sc1 >= Snext,Score is Sc1,Xb is X1,Yb is Y1. 
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-getBest(I,J,T,Board,Xb1,Yb1,V,D,Score1),Xb is Xb1,Yb is Yb1,Score is Score1.
 
-testEval(Score,T):-big1(B),eval(Score,T,B).
-eval(Score,_,_):-random(Val),Val2 is Val *10,Val1 is abs(Val2),Score is round(Val1).
-/*
+%testEval(Score,T):-big1(B),eval(Score,T,B).
+%eval(Score,_,_):-random(Val),Val2 is Val *10,Val1 is abs(Val2),Score is round(Val1).
+
 %%write for eval
 testEval(Score,T):-big3(B),eval(Score,T,B).
 
@@ -391,7 +400,7 @@ eval(Score,T1,B):-evalX(Score,T1,B,1).
 evalX(Score,T1,[H|T],X):-evalY(S1,T1,H,X,1),X1 is X+1,evalX(S2,T1,T,X1),Stmp is S1+S2,Score is Stmp. 
 evalX(Score,T,[],X):-S is 0,Score is S.
 
-evalY(S,T1,[H|T],W,V):-H >=  T1*10,H < 10+ T1*10,Snew1 is H mod 10,Snew is Snew1*V*W,V1 is V+1,evalY(Snext,T1,T,V),Stmp is Snew + Snext,S is Stmp.
+evalY(S,T1,[H|T],W,V):-H >=  T1*10,H < 10+ T1*10,Snew1 is H mod 10,Snew is Snew1*V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
 evalY(S,T1,[H|T],W,V):-H < 10,Snew is V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
 evalY(S,T1,[H|T],W,V):-V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snext + 0,S is Stmp.
 evalY(S,T1,[],W,V):-S1 is 0,S = S1.
