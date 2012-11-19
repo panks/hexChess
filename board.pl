@@ -26,7 +26,7 @@ big(
 
 big1(
 [
-  [13,1],
+  [19,1],
   [1,1],
   [1,21]
 ]).
@@ -40,7 +40,7 @@ big2(
 big3(
 [
   [1,1,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,1,11],
+  [1,1,1,1,1,1,1,1,13],
   [1,1,1,1,1,1,1,1,1],
   [1,1,1,1,1,1,1,1,1],
   [21,1,1,1,1,1,1,1,21],
@@ -101,6 +101,68 @@ set_Y(Y,P,H,Z):-setY(Y,P,H,[],Z).
 setY(1,P,[H|B],T,Re):-append(T,[P],Re1),append(Re1,B,Re).%Re1 is [T|P],Re is [Re1|B].
 setY(Y,P,[H|B],T,Re):-Y1 is Y-1,append(T,H,Tnew),setY(Y1,P,B,Tnew,Re).
 
+
+%%%
+%rook
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+%rook(X1,Y1,D,X2,Y2,L):- MT = MM.
+%rook(X1,Y1,D,X2,Y2,L).
+
+%bishop
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+%bishop(X1,Y1,D,X2,Y2,L):- MT = MM.
+
+%knight
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+knight(X1,Y1,D,X2,Y2,L):-X2 is X1-3,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+%knight(X1,Y1,D,X2,Y2,L):-MT = MM. MT = [[X2,Y2]|MM]
+
+%queen
+
+queen(X1,Y1,D,X2,Y2,L):-rook(X1,Y1,D,X2,Y21,L),X2 \== X1,Y2 \== Y1.
+queen(X1,Y1,D,X2,Y2,L):-bishop(X1,Y1,D,MT1,MT,L),X2 \== X1,Y2 \== Y1.
+%queen(X1,Y1,D,X2,Y2,L):-MT = MM.
+
+%pawn
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 1),X2 \== X1,Y2 \== Y1.
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 2),X2 \== X1,Y2 \== Y1.
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y1 > 1,Y1 <9,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 1),X2 \== X1,Y2 \== Y1.
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y1 > 1,Y1 <9,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 2),X2 \== X1,Y2 \== Y1.
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+3,Y1 > 3,Y1 <7,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 1),X2 \== X1,Y2 \== Y1.
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-3,Y1 > 3,Y1 <7,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 2),X2 \== X1,Y2 \== Y1.
+
+%king
+king(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+king(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),X2 \== X1,Y2 \== Y1.
+
+/*
 %%%
 %rook
 rook(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
@@ -110,6 +172,7 @@ rook(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),ro
 rook(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
 rook(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),rook(X2,Y2,D,[[X2,Y2]|MM],MT).
 rook(X1,Y1,D,MM,MT,L):- MT = MM.
+%rook(X1,Y1,D,MM,MT,L).
 
 %bishop
 bishop(X1,Y1,D,MM,MT,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),bishop(X2,Y2,D,[[X2,Y2]|MM],MT).
@@ -159,9 +222,12 @@ king(X1,Y1,D,MM,MT,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),MT
 king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
 king(X1,Y1,D,MM,MT,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),MT = [[X2,Y2]|MM].
 
+*/
 %%%
 
 % user input
+try(Q):- Q \== 12.
+
 inputLoop(X):-read(Y),print(Y),loop(Y).
 loop(Y):-Y \== 42,read(Y1),print(Y1),loop(Y1).
 
@@ -230,7 +296,7 @@ checkforcolor(T1, ValIn, ValOut):- ( isBlack(T1) -> ValOut is ValIn + 10 ; ValOu
 %%fill this ; check this for mate!!!
 endGame(Board,Turn).
 
-testChooseMove(A):-big3(B),iterateOverBoard(A,2,X1,Y1,X2,Y2,B,1,1,1,B),print(X1),nl,print(Y1),nl,print(X2),nl,print(Y2),nl.
+testChooseMove(A):-big1(B),iterateOverBoard(A,2,X1,Y1,X2,Y2,B,1,1,1,B),print(X1),nl,print(Y1),nl,print(X2),nl,print(Y2),nl.
 
 %%choosing!!
 chooseMove(Board,Turn,BoardUp):-Ta is Turn mod 2,T is Ta+1, iterateOverBoard(_,1,X1,Y1,X2,Y2,Board,T,1,1,Board),move(X1,Y1,X2,Y2,Board,BoardUp).
@@ -259,6 +325,22 @@ iterateOverY(S,D,X1,Y1,X2,Y2,[H|T],V,I,J,Board):-findMove(I,J,Board,V,D,_,_,Sout
 %iterateOverY(S,D,X1,Y1,X2,Y2,[],V,I,J,Board):-X1 is I,X2 is I,Y1 is J,Y2 is J,S1 is 0,S is S1.%hack!!! XXX
 
 testFindMove(S,I,J,P,X,Y):-big1(B),findMove(I,J,B,P,2,X,Y,S).
+
+
+findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp is V*10,P == Tmp,setof([X,Y],king(I,J,Board,X,Y,V),MT), 
+                                    getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
+findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+1,P == Tmp,setof([X,Y],pawn(I,J,Board,X,Y,V),MT), 
+                                    getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.                                    
+findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+3,P == Tmp,setof([X,Y],knight(I,J,Board,X,Y,V),MT), 
+                                    getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.                                    
+findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+5,P == Tmp,setof([X,Y],bishop(I,J,Board,X,Y,V),MT), 
+                                    getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
+findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+7,P == Tmp,setof([X,Y],rook(I,J,Board,X,Y,V),MT), 
+                                    getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.                                    
+findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+9,P == Tmp,setof([X,Y],queen(I,J,Board,X,Y,V),MT), 
+                                    getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.                                    
+                                                                        
+                                    /*
 %% write for findMove
 findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp is V*10,P == Tmp,king(I,J,Board,[],MT,V),
                                     getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
@@ -273,6 +355,7 @@ findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+7,
 findMove(I,J,Board,V,D,Xd,Yd,Sout):-get(I,J,P,Board),Tmp1 is V*10,Tmp is Tmp1+9,P == Tmp,queen(I,J,Board,[],MT,V),
                                     getBest(I,J,MT,Board,Xb,Yb,V,D,Eval),Sout is Eval,Xd is Xb,Yd is Yb.
 findMove(I,J,Board,V,D,Xd,Yd,Sout):-Xd is I,Yd is J,Sout is -1.%hack XXX
+*/
 
 %getBest1(I,J,Bb,Board,Xb,Yb,V,D,Score):-getBest(I,J,Bb,Board,Xb1,Yb1,V,D,Score1),Score is Score1,Xb is Xb1,Yb is Yb1.
 %getBest1(I,J,[H|_],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,Xb is X1,Yb is Y1,Score is 0.%,getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score1),Score is Score1.
@@ -285,20 +368,20 @@ lisSize([],Cou):-Cou is 0.
 %getBest(I,J,Lis,Board,Xb,Yb,V,Score):-lisSize(Lis,Len),Len == 0,Score is 0,Xb is I,Yb is J.
 %getBest(I,J,[],Board,Xb,Yb,V,Score):-Xb is I,Yb is J,S is 0,Score is S,!.
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+2,V1 is V2 mod 2, V3 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
-                                          iterateOverBoard(Sn,D1,_,_,_,_,Bnew,V3,1,1,Bnew),Sc1 is Sn+Sc,
-                                          %Sc1 is Sc,
+                                          %iterateOverBoard(Sn,D1,_,_,_,_,Bnew,V3,1,1,Bnew),Sc1 is Sn+Sc,
+                                          Sc1 is Sc,
                                           lisSize([H|T],Len),Len == 1,
                                           Score is Sc1,Xb is X1,Yb is Y1.
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),V2 is V+2,V1 is V2 mod 2, V3 is V1+1,D1 is D-1,eval(Sc,V,Bnew),
-                                          iterateOverBoard(Sn,D1,_,_,_,_,Bnew,V3,1,1,Bnew),Sc1 is Sn+Sc,
-                                          %Sc1 is Sc,
+                                          %iterateOverBoard(Sn,D1,_,_,_,_,Bnew,V3,1,1,Bnew),Sc1 is Sn+Sc,
+                                          Sc1 is Sc,
                                           getBest(I,J,T,Board,_,_,V,D,Snext),
                                           Sc1 >= Snext,Score is Sc1,Xb is X1,Yb is Y1. 
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-getBest(I,J,T,Board,Xb1,Yb1,V,D,Score1),Xb is Xb1,Yb is Yb1,Score is Score1.
 
 testEval(Score,T):-big1(B),eval(Score,T,B).
-%eval(Score,_,_):-random(Val),Val1 is Val *10,Score is round(Val1).
-
+eval(Score,_,_):-random(Val),Val2 is Val *10,Val1 is abs(Val2),Score is round(Val1).
+/*
 %%write for eval
 testEval(Score,T):-big3(B),eval(Score,T,B).
 
