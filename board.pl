@@ -177,12 +177,19 @@ try(Q):- Q \== 12.
 inputLoop(X):-read(Y),print(Y),loop(Y).
 loop(Y):-Y \== 42,read(Y1),print(Y1),loop(Y1).
 
+<<<<<<< HEAD
 testStart(Turn):-big1(B),myTurn(1,B).
 myTurn(Turn,Board):-read(X),getIpParts(X,X1,Y1,X2,Y2),move(X1,Y1,X2,Y2,Board,NewBoard),Turn1 is Turn + 2,chooseMove(NewBoard, Turn1, NewBoard2), Turn2 is Turn1 + 1, play(Turn2, NewBoard2). 
 
 getIpParts([X,Y,X1,Y1],A,B,C,D):-A is X,B is Y,C is X1,D is Y1.
 
 play(Turn,Board):-read(X), splitInput(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), chooseMove(NewBoard, Turn, NewBoard2), Turn is Turn + 2, play(Turn, NewBoard2). 
+=======
+%TODO Write endgame function
+%input usage for moving king from d3 to c5 - [k,d,3,c,5].
+
+play(Turn,Board):- write('Play your move..'), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
+>>>>>>> 29aa3ebc2a3f5b09c12a96042f963471f87a3061
 
 
 ki(k).
@@ -237,6 +244,51 @@ splitInput([X|[B|[R|D]]], X1, Y1, X2, Y2, Turn, Board):-   (
                                                                  )
                                       )
                 ), X1 = Xa, Y1 = Ya, X2 = C, Y2 = R.
+
+
+                
+                
+
+splitInput2([X|[M|[N|[B|[R|D]]]]], X1, Y1, X2, Y2, Turn, Board):-   (
+                ki(X) -> P = 'king', Val = 10;    (
+                                            qu(X) -> P='queen', Val = 19;     (
+                                      ro(X) -> P='rook', Val = 17 ;    (
+                                                        kn(X) -> P='knight', Val = 13;     (
+                                                                        bi(X) -> P='bishop', Val = 15 ;     (
+                                                                                          pa(X) -> P ='pawn', Val = 11 ; write('invalid piece'), P='', Val = 0
+                                                                                    )
+                                                                       )
+                                                        )
+                                                                        )
+                                            )
+                ), T1 is Turn mod 2,checkforcolor(T1, Val, Val2) , Xa is 1, Ya is 2,
+                
+                getint(B,C), getint(M, T),
+                
+             X1 = T, Y1 = N, X2 = C, Y2 = R.
+
+
+
+getint(B, R):-                (
+                one(B) -> C = 1 ;    (
+                                            two(B) -> C = 2;     (
+                                                                    three(B) -> C = 3 ;    (
+                                                  four(B) -> C = 4;     (
+                                                             five(B) -> C = 5 ;    (
+                                                                          six(B) -> C = 6;     (
+                                                                                    seven(B) -> C = 7 ;     (
+                                                             eight(B) -> C = 8 ;    (
+                                                                          nine(B) -> C = 9; write('not a valid column number'), C=0
+                                                                          )
+                                                            )
+                                                                                    )
+                                                                          )
+                                                            )
+                                                )
+                                                                 )
+                                      )
+                ), R is C.                
+                
 
 checkforcolor(T1, ValIn, ValOut):- ( isBlack(T1) -> ValOut is ValIn + 10 ; ValOut = ValIn ).
 
