@@ -104,27 +104,6 @@ setY(Y,P,[H|B],T,Re):-Y1 is Y-1,append(T,H,Tnew),setY(Y1,P,B,Tnew,Re).
 
 
 %%%
-/*
-%rook
-rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-rook(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-rook(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-%rook(X1,Y1,D,X2,Y2,L):- MT = MM.
-%rook(X1,Y1,D,X2,Y2,L).
-
-%bishop
-bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
-%bishop(X1,Y1,D,X2,Y2,L):- MT = MM.
-*/
-
 %knight
 knight(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
 knight(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
@@ -177,19 +156,19 @@ try(Q):- Q \== 12.
 inputLoop(X):-read(Y),print(Y),loop(Y).
 loop(Y):-Y \== 42,read(Y1),print(Y1),loop(Y1).
 
-<<<<<<< HEAD
+
 testStart(Turn):-big1(B),myTurn(1,B).
 myTurn(Turn,Board):-read(X),getIpParts(X,X1,Y1,X2,Y2),move(X1,Y1,X2,Y2,Board,NewBoard),Turn1 is Turn + 2,chooseMove(NewBoard, Turn1, NewBoard2), Turn2 is Turn1 + 1, play(Turn2, NewBoard2). 
 
 getIpParts([X,Y,X1,Y1],A,B,C,D):-A is X,B is Y,C is X1,D is Y1.
 
 play(Turn,Board):-read(X), splitInput(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), chooseMove(NewBoard, Turn, NewBoard2), Turn is Turn + 2, play(Turn, NewBoard2). 
-=======
+
 %TODO Write endgame function
 %input usage for moving king from d3 to c5 - [k,d,3,c,5].
 
 play(Turn,Board):- write('Play your move..'), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
->>>>>>> 29aa3ebc2a3f5b09c12a96042f963471f87a3061
+
 
 
 ki(k).
@@ -318,6 +297,7 @@ exMax(X1a,Y1a,X2a,Y2a,Sa,[]):-X1a is -1,X2a is -1,Y1a is -1,Y2a is -1,Sa is -1.
 exMax(X1a,Y1a,X2a,Y2a,Sa,[X1,Y1,X2,Y2,S]):-X1a is X1,Y1a is Y1,X2a is X2 , Y2a is Y2,Sa is S.
 
 oneMove(Board,Var,D,M,Imax,Jmax):-setof(Mov,loopX(1,1,Imax,Jmax,Board,Var,D,Mov),M).
+%twoMove(Board,Var,D,M,Imax,Jmax):-setof([X,Y,Xd,Yd,S],findMove(X,Y,Board,Var,D,Xd,Yd,S),M).
 %oneMove1(Board,Var,D,Ar):-setof([X1,Y1,X2,Y2,Sout],findMove(X1,X2,Board,Var,D,X2,Y2,Sout),Ar).
 
 loopY(I,J,Imax,Jmax,Board,V,D,Ar):-J<Jmax,findMove(I,J,Board,V,D,Xd,Yd,Sout),J1 is J+1,loopY(I,J1,Imax,Jmax,Board,V,D,Ar1),Sout == -1,Ar = Ar1.%Ar = [[I,J,Xd,Yd,Sout]|Ar1].
@@ -361,7 +341,11 @@ getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew)
                                           Sc1 is Sc,
                                           getBest(I,J,T,Board,_,_,V,D,Snext),
                                           Sc1 >= Snext,Score is Sc1,Xb is X1,Yb is Y1. 
-getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-getBest(I,J,T,Board,Xb1,Yb1,V,D,Score1),Xb is Xb1,Yb is Yb1,Score is Score1.
+getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-%getBest(I,J,T,Board,Xb1,Yb1,V,D,Score1),Xb is Xb1,Yb is Yb1,Score is Score1.
+                                          [X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),flip(V3,V),D1 is D-1,eval(Sc,V,Bnew),
+                                          %Sc1 is Sn+Sc,
+                                          getBest(I,J,T,Board,Xb1,Yb1,V,D,Score1),Xb is Xb1,Yb is Yb1,Score is Score1,
+                                          Sc1 is Sc,getBest(I,J,T,Board,_,_,V,D,Snext),Sc1 < Snext. 
 
 %testEval(Score,T):-big1(B),eval(Score,T,B).
 %eval(Score,_,_):-random(Val),Val2 is Val *10,Val1 is abs(Val2),Score is round(Val1).
