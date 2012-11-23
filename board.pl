@@ -156,7 +156,6 @@ try(Q):- Q \== 12.
 inputLoop(X):-read(Y),print(Y),loop(Y).
 loop(Y):-Y \== 42,read(Y1),print(Y1),loop(Y1).
 
-
 testStart(Turn):-big1(B),myTurn(1,B).
 myTurn(Turn,Board):-read(X),getIpParts(X,X1,Y1,X2,Y2),move(X1,Y1,X2,Y2,Board,NewBoard),Turn1 is Turn + 2,chooseMove(NewBoard, Turn1, NewBoard2), Turn2 is Turn1 + 1, play(Turn2, NewBoard2). 
 
@@ -169,12 +168,15 @@ play(Turn,Board):-read(X), splitInput(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y
 
 play(Turn,Board):- write('Play your move..'), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
 
+%TODO Write endgame function
+%input usage for moving king from d3 to c5 - [k,d,3,c,5].
 
+play(Turn,Board):- write('Play your move..'), big3(Board), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
 
 ki(k).
 qu(q).
 ro(r).
-kn(k).
+kn(n).
 bi(b).
 pa(p).
 
