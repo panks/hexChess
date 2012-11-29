@@ -99,8 +99,9 @@ setX(1,Y,P,[H|J],T,Re):-set_Y(Y,P,H,Z),append(T,[Z],Re1),append(Re1,J,Re).
 setX(X,Y,P,[H|J],T,Re):-X1 is X-1,append(T,[H],Tnew),setX(X1,Y,P,J,Tnew,Re).
 
 set_Y(Y,P,H,Z):-setY(Y,P,H,[],Z).
+%setY(1,P,[H|B],[],Re):-append([],[P],Re1),append(Re1,B,Re).%Re1 is [T|P],Re is [Re1|B].
 setY(1,P,[H|B],T,Re):-append(T,[P],Re1),append(Re1,B,Re).%Re1 is [T|P],Re is [Re1|B].
-setY(Y,P,[H|B],T,Re):-Y1 is Y-1,append(T,H,Tnew),setY(Y1,P,B,Tnew,Re).
+setY(Y,P,[H|B],T,Re):-Y1 is Y-1,append(T,H,Tnew),setY(Y1,P,B,[Tnew],Re).
 
 
 %%%
@@ -161,17 +162,24 @@ myTurn(Turn,Board):-read(X),getIpParts(X,X1,Y1,X2,Y2),move(X1,Y1,X2,Y2,Board,New
 
 getIpParts([X,Y,X1,Y1],A,B,C,D):-A is X,B is Y,C is X1,D is Y1.
 
-play(Turn,Board):-read(X), splitInput(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), chooseMove(NewBoard, Turn, NewBoard2), Turn is Turn + 2, play(Turn, NewBoard2). 
+%play(Turn,Board):-read(X), splitInput(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), chooseMove(NewBoard, Turn, NewBoard2), Turn is Turn + 2, play(Turn, NewBoard2). 
 
 %TODO Write endgame function
 %input usage for moving king from d3 to c5 - [k,d,3,c,5].
+%homePlay(T):-big(B),play(1,B),T is 1.
+homePlay(T):-big(B),playDual(1,B),T is 2.
 
-play(Turn,Board):- write('Play your move..'), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
+play(Turn,Board):- write('Play your move..'),nl, read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), 
+                   Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), nl,Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
 
+%two person!!
+playDual(Turn,Board):- write('Play your move..'),nl, read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(Y1,X1,Y2,X2,Board,NewBoard), Turn2 is Turn + 1, 
+                       write(NewBoard),write('Wait for opponent to Play..'),nl, read(AX), splitInput2(AX,AX1,AY1,AX2,AY2,Turn2,NewBoard),
+                       move(AY1,AX1,AY2,AX2,NewBoard,NewBoard2),write('Done..'), nl,Turn3 is Turn2 + 1, write(NewBoard2),play(Turn3, NewBoard2). 
 %TODO Write endgame function
-%input usage for moving king from d3 to c5 - [k,d,3,c,5].
+%input usage for moving king from d3 to c5 - [k,d,3,c,5].	
 
-play(Turn,Board):- write('Play your move..'), big3(Board), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
+%play(Turn,Board):- write('Play your move..'), big3(Board), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
 
 ki(k).
 qu(q).
