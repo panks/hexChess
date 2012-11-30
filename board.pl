@@ -193,9 +193,21 @@ play(Turn,Board):- write('Play your move..'),nl, read(X), splitInput2(X,X1,Y1,X2
                    Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), nl,Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
 
 %two person!!
+playDual(Turn,Board):-player1(Turn,Board,Boardout,Turnout),nl,write('Wait for opponent to Play..'),player1(Turnout,Boardout,Boardout1,Turnout1),nl,write('done'),nl,playDual(1,Boardout1).
+
+/*
 playDual(Turn,Board):- write('Play your move..'),nl, read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(Y1,X1,Y2,X2,Board,NewBoard), Turn2 is Turn + 1, 
                        write(NewBoard),write('Wait for opponent to Play..'),nl, read(AX), splitInput2(AX,AX1,AY1,AX2,AY2,Turn2,NewBoard),
                        move(AY1,AX1,AY2,AX2,NewBoard,NewBoard2),write('Done..'), nl,Turn3 is Turn2 + 1, write(NewBoard2),playDual(Turn3, NewBoard2). 
+*/                       
+player1(Turn,Board,NewBoard,Turn2):-write('Play your move..'),nl, read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board),isValid(Y1,X1,Y2,X2,Board,Turn), move(Y1,X1,Y2,X2,Board,NewBoard), Turn2 is Turn + 1.
+
+isValid(Y1,X1,Y2,X2,Board,Turn):-pawn(Y1,X1,Board,Y2,X2,Turn).
+isValid(Y1,X1,Y2,X2,Board,Turn):-rook(Y1,X1,Board,Y2,X2,Turn).
+isValid(Y1,X1,Y2,X2,Board,Turn):-queen(Y1,X1,Board,Y2,X2,Turn).
+isValid(Y1,X1,Y2,X2,Board,Turn):-king(Y1,X1,Board,Y2,X2,Turn).
+isValid(Y1,X1,Y2,X2,Board,Turn):-bishop(Y1,X1,Board,Y2,X2,Turn).
+isValid(Y1,X1,Y2,X2,Board,Turn):-knight(Y1,X1,Board,Y2,X2,Turn).
 %TODO Write endgame function
 %input usage for moving king from d3 to c5 - [k,d,3,c,5].	
 
