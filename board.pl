@@ -388,13 +388,13 @@ player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Moves),%flatten2(Li
                                     %evaluate_and_choose(Moves,Board,4,100,(nil,-1000),([I,J,X,Y],_),Turn),
                                    % finAI(Moves,Board,[I,J,X,Y],T,Turn),
                                    % move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
-                                   chooseR(Moves, _,[A,B,C,D]), move(A,B,C,D,Board,NewBoard),Turn2 is Turn +1, nl, write('Move is: '),write(A),write(B),write(C), write(D), nl.
+                                   chooseR(Turn,Board,Moves, _,[A,B,C,D]), move(A,B,C,D,Board,NewBoard),Turn2 is Turn +1, nl, write('Move is: '),write(A),write(B),write(C), write(D), nl.
 
-chooseR([], [], []).
-chooseR(List, Elt, RElt) :-
+chooseR(_,_,[], [], []).
+chooseR(Turn,Board,List, Elt, RElt) :-
         length(List, Length),
-        random(0, Length, Index),
-        nth0(Index, List, Elt),(valcomp(Elt) -> RElt = Elt ; chooseR(List, _, Elt2), RElt = Elt2).
+       random(0, Length, Index),
+        nth0(Index, List, Elt),(valcomp(Turn,Board,Elt) -> RElt = Elt ; chooseR(Turn,Board,List, _, Elt2), RElt = Elt2).
 
 
                                    
@@ -403,8 +403,8 @@ chooseR(List, Elt, RElt) :-
 
 %play(Turn,Board):- write('Play your move..'), big3(Board), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
 
-valcomp(A):- catch(valcomp2(A), E, false).
-valcomp2([A|[B|[C|[D|E]]]]):- C < 10, D < 9.
+valcomp(Turn,Board,A):- catch(valcomp2(Turn,Board,A), E, false).
+valcomp2(Turn,Board,[A|[B|[C|[D|E]]]]):- C < 10, D < 9, get(A,B,P,Board), M is P//10, M == Turn.
 
 ki(k).
 qu(q).
