@@ -301,7 +301,7 @@ play(Turn,Board):- write('Play your move..'),nl, read(X), splitInput2(X,X1,Y1,X2
                    Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), nl,Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
 
 %two person!!
-playDual(Turn,Board):-player1(Turn,Board,Boardout,Turnout),nl,write('Wait for opponent to Play..'),player1(Turnout,Boardout,Boardout1,Turnout1),nl,write('done'),nl,playDual(1,Boardout1).
+playDual(Turn,Board):-player1(Turn,Board,Boardout,Turnout),printb(Boardout),nl,write('Wait for opponent to Play..'),player2(Turnout,Boardout,Boardout1,Turnout1),printb(Boardout1),nl,write('done'),nl,playDual(1,Boardout1).
 
 /*
 playDual(Turn,Board):- write('Play your move..'),nl, read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(Y1,X1,Y2,X2,Board,NewBoard), Turn2 is Turn + 1, 
@@ -386,13 +386,25 @@ update(Move,Value,(Move1,Value1),(Move,Value)) :- Value > Value1.
 	  
 player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Moves),%flatten2(Lis,Moves),
                                     %evaluate_and_choose(Moves,Board,4,100,(nil,-1000),([I,J,X,Y],_),Turn),
-                                    finAI(Moves,Board,[I,J,X,Y],T,Turn),
-                                    move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
+                                   % finAI(Moves,Board,[I,J,X,Y],T,Turn),
+                                   % move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
+                                   chooseR(Moves, _, RMove), [A|[B|[C|[D|E]]]] = RMoves,move(A,B,C,D,Board,NewBoard),printb(NewBoard),Turn2 is Turn +1, nl, write('Move is: '),write(RMove), nl.
 
+chooseR([], [], []).
+chooseR(List, Elt, RElt) :-
+        length(List, Length),
+        random(0, Length, Index),
+        nth0(Index, List, Elt),(valcomp(Elt) -> RElt = Elt ; chooseR(List, _, Elt2), RElt = Elt2).
+
+
+                                   
 %TODO Write endgame function
 %input usage for moving king from d3 to c5 - [k,d,3,c,5].	
 
 %play(Turn,Board):- write('Play your move..'), big3(Board), read(X), splitInput2(X,X1,Y1,X2,Y2,Turn,Board), move(X1,Y1,X2,Y2,Board,NewBoard), Turn2 is Turn + 1, write('Wait for Computer to Play..'), chooseMove(NewBoard, Turn2, NewBoard2), write('Done..'), Turn3 is Turn2 + 1, play(Turn3, NewBoard2). 
+
+valcomp(A):- catch(valcomp2(A), E, false).
+valcomp2([A|[B|[C|[D|E]]]]):- C < 8, D < 8 .
 
 ki(k).
 qu(q).
@@ -585,4 +597,7 @@ evalY(S,T1,[H|T],W,V):-H >=  T1*10,H < 10+ T1*10,Snew1 is H mod 10,Snew is Snew1
 evalY(S,T1,[H|T],W,V):-H < 10,Snew is H*V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
 evalY(S,T1,[H|T],W,V):-V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snext + 0,S is Stmp.
 evalY(S,T1,[],W,V):-S1 is 0,S = S1.
+
+printb([]).
+printb([H|T]):- nl, write(H),printb(T).
 /* EXPAND THIS TODO */
