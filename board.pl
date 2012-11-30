@@ -348,6 +348,11 @@ flatten2(L, [L]).
 /* DANGER 
   implement value Function!!!*/
 
+finAI([[I,J,X,Y]|Moves],Board,Best,Topscore,Turn):-move(I,J,X,Y,Board,Board1),eval(Score,Turn,Board1),Score >= Topscore,write('asdf '),write(Score),nl,
+                                              Topscore1 is Score,Best = [I,J,X,Y],finAI(Moves,Board,Best,Topscore1,Turn).
+                                              
+finAI([],Board,Best,T,Turn).
+  
 evaluate_and_choose([[I,J,X,Y]|Moves],Position,D,MaxMin,Record,BestMove,Turn) :-
 	move(I,J,X,Y,Position,Position1),
     minimax(D,Position1,MaxMin,MoveX,Value,Turn), 
@@ -368,7 +373,7 @@ minimax(D,Position,MaxMin,Move,Value) :-
         setTurn(Turn,Turn1),
         D > 0,
         %findall(M,move(Position,M),Moves),%%HOW TO DO THIS
-        lopX(1,1,10,9,Position,Turn1,Moves)%,flatten2(Lis,Moves),
+        lopX(1,1,10,9,Position,Turn1,Moves),%,flatten2(Lis,Moves),
         D1 is D - 1,
         MinMax is -MaxMin,
         evaluate_and_choose(Moves,Position,D1,MinMax,(nil,-1000),(Move,Value),Turn1).
@@ -379,8 +384,9 @@ update(Move,Value,(Move1,Value1),(Move,Value)) :- Value > Value1.
 	  
 	  %%%%%%%%%%%%%%%%%%%%%%%%%
 	  
-player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Moves)%,flatten2(Lis,Moves),
-                                    evaluate_and_choose(Moves,Board,4,100,(nil,-1000),([I,J,X,Y],_),Turn),
+player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Moves),%flatten2(Lis,Moves),
+                                    %evaluate_and_choose(Moves,Board,4,100,(nil,-1000),([I,J,X,Y],_),Turn),
+                                    finAI(Moves,Board,[I,J,X,Y],T,Turn),
                                     move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
 
 %TODO Write endgame function
