@@ -170,6 +170,114 @@ king(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X
 king(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
 king(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
 
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+3,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-3,Y2 is Y1+3,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+3,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-3,Y2 is Y1-3,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+4,Y2 is Y1+4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-4,Y2 is Y1+4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+4,Y2 is Y1-4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-4,Y2 is Y1-4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+5,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-5,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+5,Y2 is Y1+5,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-5,Y2 is Y1+5,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+5,Y2 is Y1-5,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-5,Y2 is Y1-5,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+6,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-6,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+6,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-6,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+6,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-6,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+6,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-6,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+7,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-7,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+7,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+7,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-7,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-7,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+8,Y2 is Y1+8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-8,Y2 is Y1+8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+8,Y2 is Y1-8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-8,Y2 is Y1-8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+9,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-9,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+9,Y2 is Y1+9,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-9,Y2 is Y1+9,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1+9,Y2 is Y1-9,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+rook(X1,Y1,D,X2,Y2,L):-X2 is X1-9,Y2 is Y1-9,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+%%%% ---
+
+%bishop
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1-2,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y2 is Y1+4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y2 is Y1+4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y2 is Y1-4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y2 is Y1-4,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+3,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-3,Y2 is Y1+6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+3,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-3,Y2 is Y1-6,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+4,Y2 is Y1+8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-4,Y2 is Y1+8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+4,Y2 is Y1-8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-4,Y2 is Y1-8,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+10,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-10,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+5,Y2 is Y1+10,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-5,Y2 is Y1+10,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1+5,Y2 is Y1-10,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+bishop(X1,Y1,D,X2,Y2,L):-X2 is X1-5,Y2 is Y1-10,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
+
 
 % user input
 try(Q):- Q \== 12.
@@ -208,6 +316,72 @@ isValid(Y1,X1,Y2,X2,Board,Turn):-queen(Y1,X1,Board,Y2,X2,Turn).
 isValid(Y1,X1,Y2,X2,Board,Turn):-king(Y1,X1,Board,Y2,X2,Turn).
 isValid(Y1,X1,Y2,X2,Board,Turn):-bishop(Y1,X1,Board,Y2,X2,Turn).
 isValid(Y1,X1,Y2,X2,Board,Turn):-knight(Y1,X1,Board,Y2,X2,Turn).
+
+lopY(I,J,Imax,Jmax,Board,V,Ar):-J<Jmax, findMove1(I,J,Board,V,Sout),J1 is J+1,lopY(I,J1,Imax,Jmax,Board,V,D,Ar1),append(Sout,Ar1,Ar).
+lopY(I,J,Imax,Jmax,Board,V,Ar):-J==Jmax,findMove1(I,J,Board,V,Sout),Ar = Sout.
+
+lopX(I,_,Imax,Jmax,Board,V,Ar):-I<Imax,lopY(I,1,Imax,Jmax,Board,V,D,Ar1),I1 is I+1,lopX(I1,1,Imax,Jmax,Board,V,D,Ar2),append(Ar1,Ar2,Ar).%Ar = [Ar1|Ar2].
+lopX(I,_,Imax,Jmax,Board,V,Ar):-I==Imax,lopY(I,1,Imax,Jmax,Board,V,D,Ar1),Ar = Ar1.
+
+findMove1(I,J,Board,Turn,Sout):-get(I,J,P,Board),findMove2(P,I,J,Board,Turn,Sout).
+
+findMove2(P,I,J,Board,Turn,Sout):-P == 1,Sout =[],!.
+findMove2(P,I,J,Board,Turn,Sout):-P == 0,Sout =[],!.
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 1,setof([X,Y],pawn(I,J,Board,Turn,X,Y),Sout),!.
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 3,setof([X,Y],knight(I,J,Board,Turn,X,Y),Sout),!.
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 5,setof([X,Y],bishop(I,J,Board,Turn,X,Y),Sout),!.
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 7,setof([X,Y],rook(I,J,Board,Turn,X,Y),Sout),!.
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 9,setof([X,Y],queen(I,J,Board,Turn,X,Y),Sout),!.
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 0,setof([X,Y],king(I,J,Board,Turn,X,Y),Sout),!.
+findMove2(P,I,J,Board,Turn,Sout):-Sout = [],!.
+
+flatten2([], []) :- !.
+
+flatten2([L|Ls], FlatL) :-
+    !,
+    flatten2(L, NewL),
+    flatten2(Ls, NewLs),
+    append(NewL, NewLs, FlatL).
+    
+flatten2(L, [L]).
+
+/* DANGER 
+  implement value Function!!!*/
+
+evaluate_and_choose([I,J,X,Y|Moves],Position,D,MaxMin,Record,BestMove,Turn) :-
+	move(I,J,X,Y,Position,Position1),
+    minimax(D,Position1,MaxMin,MoveX,Value,Turn), 
+	update([I,J,X,Y],Value,Record,Record1),
+ 	evaluate_and_choose(Moves,Position,D,MaxMin,Record1,BestMove,Turn).
+    
+evaluate_and_choose([],Position,D,MaxMin,Record,Record,T).
+evaluate_and_choose([A,B],Position,D,MaxMin,Record,Record,T).
+evaluate_and_choose([A,B,C],Position,D,MaxMin,Record,Record,T).
+
+ %%%%%%%%%%%%%%%%
+setTurn(T,To):-T==1,To is 2.
+setTurn(T,To):-T==2,To is 1.
+
+minimax(0,Position,MaxMin,Move,Value,Turn) :-eval(Score,Turn,B),Value is V * MaxMin.
+     
+minimax(D,Position,MaxMin,Move,Value) :-
+        setTurn(Turn,Turn1),
+        D > 0,
+        %findall(M,move(Position,M),Moves),%%HOW TO DO THIS
+        lopX(1,1,10,9,Position,Turn1,Lis),flatten2(Lis,Moves),
+        D1 is D - 1,
+        MinMax is -MaxMin,
+        evaluate_and_choose(Moves,Position,D1,MinMax,(nil,-1000),(Move,Value),Turn1).
+
+        %%%%%%%%%%%
+update(Move,Value,(Move1,Value1),(Move1,Value1)) :- Value =< Value1.
+update(Move,Value,(Move1,Value1),(Move,Value)) :- Value > Value1.
+	  
+	  %%%%%%%%%%%%%%%%%%%%%%%%%
+	  
+player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Lis),flatten2(Lis,Moves),evaluate_and_choose(Moves,Board,4,100,(nil,-1000),([I,J,X,Y],_),Turn),
+                                    move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
+
 %TODO Write endgame function
 %input usage for moving king from d3 to c5 - [k,d,3,c,5].	
 
