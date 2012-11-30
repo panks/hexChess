@@ -325,14 +325,14 @@ lopX(I,_,Imax,Jmax,Board,V,Ar):-I==Imax,lopY(I,1,Imax,Jmax,Board,V,Ar1),append(A
 
 findMove1(I,J,Board,Turn,Sout):-get(I,J,P,Board),findMove2(P,I,J,Board,Turn,Sout).
 
-findMove2(P,I,J,Board,Turn,Sout):-P == 1,Sout =[],!.
-findMove2(P,I,J,Board,Turn,Sout):-P == 0,Sout =[],!.
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 1,setof([I,J,X,Y],pawn(I,J,Board,Turn,X,Y),Sout),!.
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 3,setof([I,J,X,Y],knight(I,J,Board,Turn,X,Y),Sout),!.
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 5,setof([I,J,X,Y],bishop(I,J,Board,Turn,X,Y),Sout),!.
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 7,setof([I,J,X,Y],rook(I,J,Board,Turn,X,Y),Sout),!.
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 9,setof([I,J,X,Y],queen(I,J,Board,Turn,X,Y),Sout),!.
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 0,setof([I,J,X,Y],king(I,J,Board,Turn,X,Y),Sout),!.
+findMove2(P,I,J,Board,Turn,Sout):-P == 1,Sout =[].
+findMove2(P,I,J,Board,Turn,Sout):-P == 0,Sout =[].
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 1,setof([I,J,X,Y],pawn(I,J,Board,Turn,X,Y),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 3,setof([I,J,X,Y],knight(I,J,Board,Turn,X,Y),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 5,setof([I,J,X,Y],bishop(I,J,Board,Turn,X,Y),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 7,setof([I,J,X,Y],rook(I,J,Board,Turn,X,Y),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 9,setof([I,J,X,Y],queen(I,J,Board,Turn,X,Y),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 0,setof([I,J,X,Y],king(I,J,Board,Turn,X,Y),Sout).
 findMove2(P,I,J,Board,Turn,Sout):-Sout = [],!.
 
 flatten2([], []) :- !.
