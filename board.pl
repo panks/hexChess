@@ -355,9 +355,12 @@ finAI([[I,J,X,Y]|Moves],Board,Best,Topscore,Turn):-move(I,J,X,Y,Board,Board1),ev
 finAI([],Board,Best,T,Turn).
   
 evaluate_and_choose([[I,J,X,Y]|Moves],Position,D,MaxMin,Record,BestMove,Turn) :-
+%nl,write(Moves),nl,write(I),write(J),nl,write(Position),nl,
+write(' in eval_and_choose'),
 	move(I,J,X,Y,Position,Position1),
     minimax1(D,Position1,MaxMin,_,Value,Turn), 
 	update([I,J,X,Y],Value,Record,Record1),
+    write(' eval innercall'),
  	evaluate_and_choose(Moves,Position,D,MaxMin,Record1,BestMove,Turn).
     
 %evaluate_and_choose([[A,B,[],D]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
@@ -366,9 +369,10 @@ evaluate_and_choose([[I,J,X,Y]|Moves],Position,D,MaxMin,Record,BestMove,Turn) :-
 evaluate_and_choose([],Position,D,MaxMin,Record,Record,T).	
 
  %%%%%%%%%%%%%%%%
-minimax1(0,Position,MaxMin,Move,Value,Turn) :-eval(Score,Turn,Position),Value is Score * MaxMin.
+minimax1(0,Position,MaxMin,Move,Value,Turn) :-write(' in Maxmin first'),eval(Score,Turn,Position),Value is Score * MaxMin.
      
 minimax1(D,Position,MaxMin,Move,Value,Turn) :-
+        write(' in Maxmin 2'),
         flip(Turn,Turn1),
         D > 0,
         %findall(M,move(Position,M),Moves),%%HOW TO DO THIS
@@ -388,12 +392,12 @@ update(Move,Value,(Move1,Value1),(Move,Value)) :- Value > Value1.
 	  
 	  evaluate_and_choose([[1,2,3,3],[1,3,1,1],[1,3,3,7],[1,3,4,9],[1,4,_288610,_288612],[1,4,_288619,_288621],[1,4,_288628,_288630],[1,4,_288637,_288639],[1,4,_288646,_288648],[1,4,_288655,_288657],[1,4,1,_288810],[1,4,1,_288891],[1,4,3,_288819],[1,4,3,_288828],[1,4,3,_288837],[1,4,3,_288846],[1,4,3,_288855],[1,4,3,_288864],[1,4,3,_288873],[1,4,3,_288882],[1,4,4,_288738],[1,4,4,_288747],[1,4,4,_288756],[1,4,4,_288765],[1,4,4,_288774],[1,4,4,_288783],[1,4,4,_288792],[1,4,4,_288801],[1,4,5,_288702],[1,4,5,_288711],[1,4,5,_288720],[1,4,5,_288729],[1,4,6,_288666],[1,4,6,_288675],[1,4,6,_288684],[1,4,6,_288693],[1,5,1,6],[1,7,3,6],[1,7,3,8],[1,8,1,6],[1,8,3,4],[1,8,4,2],[1,9,1,1],[1,9,1,6],[1,9,3,7],[1,9,4,6],[1,9,5,5],[1,9,6,4],[1,9,7,3],[2,1,3,1],[2,2,3,2],[2,2,4,2],[2,3,3,3],[2,3,4,3],[2,4,3,4],[2,4,4,4],[2,4,5,4],[2,5,3,5],[2,5,4,5],[2,5,5,5],[2,6,1,6],[2,6,3,6],[2,6,4,6],[2,6,5,6],[2,7,3,7],[2,7,4,7],[2,8,3,8],[2,8,4,8],[2,9,3,9]],[[27,13,15,19,10,1,13,15,17],[11,11,11,11,11,11,11,11,11],[1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1],[21,1,1,1,1,1,1,1,21],[1,21,1,1,1,1,1,21,27],[0,25,21,1,1,1,21,23,0],[0,0,23,21,1,21,25,0,0],[0,0,0,25,25,29,0,0,0],[0,0,0,0,20,0,0,0,0]],1,1,([1,2,3,1],-15),(_286134,_380419),1)
 	  */
-player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Moves),%flatten2(Lis,Moves),
-                                    evaluate_and_choose(Moves,Board,0,-1,(nil,-999999),([I,J,X,Y],_),Turn),
+player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Moves),nl,write('in play2'),nl,write(Moves),%flatten2(Lis,Moves),
+                                    evaluate_and_choose(Moves,Board,1,-1,(nil,-999999),([I,J,X,Y],_),Turn),
                                     % finAI(Moves,Board,[I,J,X,Y],T,Turn),
                                     % move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
                                     %chooseR(Turn,Board,Moves, _,[A,B,C,D]), 
-                                    move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1, nl, write('Move is: '),write(A),write(B),write(C), write(D), nl.
+                                    move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1, nl, write('Move is: '),write(I),write(J),write(X), write(Y), nl.
 
 chooseR(_,_,[], [], []).
 chooseR(Turn,Board,List, Elt, RElt) :-
