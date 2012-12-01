@@ -372,23 +372,27 @@ minimax1(D,Position,MaxMin,Move,Value,Turn) :-
         flip(Turn,Turn1),
         D > 0,
         %findall(M,move(Position,M),Moves),%%HOW TO DO THIS
-        lopX(1,1,3,2,Position,Turn1,Moves),%,flatten2(Lis,Moves),
+        lopX(1,1,10,9,Position,Turn1,Moves),%,flatten2(Lis,Moves), %change here for testing!!
         D1 is D - 1,
         MinMax is -MaxMin,
         evaluate_and_choose(Moves,Position,D1,MinMax,(nil,-99),(Move,Value),Turn1).
 
         %%%%%%%%%%%
 update(Move,Value,(Move1,Value1),(Move1,Value1)) :- Value =< Value1.
-update(Move,Value,(Move1,Value1),(Move1,Value1)) :- Value == Value1.
+%update(Move,Value,(Move1,Value1),(Move1,Value1)) :- Value == Value1.
 update(Move,Value,(Move1,Value1),(Move,Value)) :- Value > Value1.
 	  
 	  %%%%%%%%%%%%%%%%%%%%%%%%%
+	  /*
 	  
+	  
+	  */
 player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Moves),%flatten2(Lis,Moves),
-                                    %evaluate_and_choose(Moves,Board,4,100,(nil,-1000),([I,J,X,Y],_),Turn),
-                                   % finAI(Moves,Board,[I,J,X,Y],T,Turn),
-                                   % move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
-                                   chooseR(Turn,Board,Moves, _,[A,B,C,D]), move(A,B,C,D,Board,NewBoard),Turn2 is Turn +1, nl, write('Move is: '),write(A),write(B),write(C), write(D), nl.
+                                    evaluate_and_choose(Moves,Board,4,-99,(nil,-999999),([I,J,X,Y],_),Turn),
+                                    % finAI(Moves,Board,[I,J,X,Y],T,Turn),
+                                    % move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
+                                    %chooseR(Turn,Board,Moves, _,[A,B,C,D]), 
+                                    move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1, nl, write('Move is: '),write(A),write(B),write(C), write(D), nl.
 
 chooseR(_,_,[], [], []).
 chooseR(Turn,Board,List, Elt, RElt) :-
@@ -588,16 +592,20 @@ getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-%getBest(I,J,T,Board,Xb1,Yb1,V,D,Score
 %%write for eval
 testEval(Score,T):-big3(B),eval(Score,T,B).
 
-eval(Score,T1,B):-evalX(Score,T1,B,1).
+eval(Score,T1,B):-flip(T1,T2),evalX(Score,T2,B,1).
 
 evalX(Score,T1,[H|T],X):-evalY(S1,T1,H,X,1),X1 is X+1,evalX(S2,T1,T,X1),Stmp is S1+S2,Score is Stmp. 
 evalX(Score,T,[],X):-S is 0,Score is S.
 
+evalY(S,T1,[H|T],W,V):-T1 is H//10,evalY(S1,T1,T,W,V),S is S1+H.
+evalY(S,T1,[H|T],W,V):-evalY(S1,T1,T,W,V),S is S1.
+evalY(S,T1,[],W,V):-S1 is 0,S = S1.
+/*
 evalY(S,T1,[H|T],W,V):-H >=  T1*10,H < 10+ T1*10,Snew1 is H mod 10,Snew is Snew1*V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
 evalY(S,T1,[H|T],W,V):-H < 10,Snew is H*V*W,V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snew + Snext,S is Stmp.
 evalY(S,T1,[H|T],W,V):-V1 is V+1,evalY(Snext,T1,T,W,V1),Stmp is Snext + 0,S is Stmp.
 evalY(S,T1,[],W,V):-S1 is 0,S = S1.
-
+*/
 printb([]).
 printb([H|T]):- nl, write(H),printb(T).
 /* EXPAND THIS TODO */
