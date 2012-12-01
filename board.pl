@@ -360,9 +360,9 @@ evaluate_and_choose([[I,J,X,Y]|Moves],Position,D,MaxMin,Record,BestMove,Turn) :-
 	update([I,J,X,Y],Value,Record,Record1),
  	evaluate_and_choose(Moves,Position,D,MaxMin,Record1,BestMove,Turn).
     
-evaluate_and_choose([[A,B,[],D]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
-evaluate_and_choose([[A,B,C,[]]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
-evaluate_and_choose([[A,B,[],[]]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
+%evaluate_and_choose([[A,B,[],D]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
+%evaluate_and_choose([[A,B,C,[]]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
+%evaluate_and_choose([[A,B,[],[]]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
 evaluate_and_choose([],Position,D,MaxMin,Record,Record,T).	
 
  %%%%%%%%%%%%%%%%
@@ -378,7 +378,8 @@ minimax1(D,Position,MaxMin,Move,Value,Turn) :-
         evaluate_and_choose(Moves,Position,D1,MinMax,(nil,-99),(Move,Value),Turn1).
 
         %%%%%%%%%%%
-update(Move,Value,(Move1,Value),(Move1,Value1)) :- Value =< Value1.
+update(Move,Value,(Move1,Value1),(Move1,Value1)) :- Value =< Value1.
+update(Move,Value,(Move1,Value1),(Move1,Value1)) :- Value == Value1.
 update(Move,Value,(Move1,Value1),(Move,Value)) :- Value > Value1.
 	  
 	  %%%%%%%%%%%%%%%%%%%%%%%%%
