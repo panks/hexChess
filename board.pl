@@ -48,7 +48,7 @@ big(
 
 big1(
 [
-  [11,1],
+  [11,17],
   [1,1],
   [1,21]
 ]).
@@ -144,16 +144,16 @@ queen(X1,Y1,D,X2,Y2,L):-bishop(X1,Y1,D,MT1,MT,L),(X2 \== X1;Y2 \== Y1).
 %queen(X1,Y1,D,X2,Y2,L):-MT = MM.
 
 %pawn
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 1),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P//10  == 2;L is 1),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P//10  == 2;L is 1),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P//10  == 1;L is 2),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P//10  == 1;L is 2),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 2),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y1 > 1,Y1 <9,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 1),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y1 > 1,Y1 <9,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 2),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+3,Y1 > 3,Y1 <7,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 1),(X2 \== X1;Y2 \== Y1).
-pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-3,Y1 > 3,Y1 <7,Y2 is Y1,get(X2,Y2,P,D),(P =1;L is 2),(X2 \== X1;Y2 \== Y1).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1,get(X2,Y2,P,D),P =1,(X2 \== X1;Y2 \== Y1),flip(L,1).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),P//10  == 2,(X2 \== X1;Y2 \== Y1),flip(L,1).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),P//10  == 2,(X2 \== X1;Y2 \== Y1),flip(L,1).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),P//10  == 1,(X2 \== X1;Y2 \== Y1),flip(L,2).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),P//10  == 1,(X2 \== X1;Y2 \== Y1),flip(L,2).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1,get(X2,Y2,P,D),P =1,(X2 \== X1;Y2 \== Y1),flip(L,1).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+2,Y1 > 1,Y1 <9,Y2 is Y1,get(X2,Y2,P,D),P =1,(X2 \== X1;Y2 \== Y1),flip(L,1).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-2,Y1 > 1,Y1 <9,Y2 is Y1,get(X2,Y2,P,D),P =1,(X2 \== X1;Y2 \== Y1),flip(L,2).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1+3,Y1 > 3,Y1 <7,Y2 is Y1,get(X2,Y2,P,D),P =1,(X2 \== X1;Y2 \== Y1),flip(L,1).
+pawn(X1,Y1,D,X2,Y2,L):-X2 is X1-3,Y1 > 3,Y1 <7,Y2 is Y1,get(X2,Y2,P,D),P =1,(X2 \== X1;Y2 \== Y1),flip(L,2).
 %add attack moves...
 
 %king
@@ -170,6 +170,7 @@ king(X1,Y1,D,X2,Y2,L):-X2 is X1-1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X
 king(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
 king(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
 
+%rook
 rook(X1,Y1,D,X2,MT,L):-X2 is X1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
 rook(X1,Y1,D,X2,Y2,L):-X2 is X1,Y2 is Y1-1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
 rook(X1,Y1,D,X2,Y2,L):-X2 is X1+1,Y2 is Y1+1,get(X2,Y2,P,D),(P =1;L is P//10),(X2 \== X1;Y2 \== Y1).
@@ -327,12 +328,12 @@ findMove1(I,J,Board,Turn,Sout):-get(I,J,P,Board),findMove2(P,I,J,Board,Turn,Sout
 
 findMove2(P,I,J,Board,Turn,Sout):-P == 1,Sout =[].
 findMove2(P,I,J,Board,Turn,Sout):-P == 0,Sout =[].
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 1,setof([I,J,X,Y],pawn(I,J,Board,Turn,X,Y),Sout).
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 3,setof([I,J,X,Y],knight(I,J,Board,Turn,X,Y),Sout).
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 5,setof([I,J,X,Y],bishop(I,J,Board,Turn,X,Y),Sout).
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 7,setof([I,J,X,Y],rook(I,J,Board,Turn,X,Y),Sout).
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 9,setof([I,J,X,Y],queen(I,J,Board,Turn,X,Y),Sout).
-findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 0,setof([I,J,X,Y],king(I,J,Board,Turn,X,Y),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,P1 == 1,Turn is P//10,flip(Turn,Turn1),setof([I,J,X,Y],pawn(I,J,Board,X,Y,Turn1),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,Turn is P//10,P1 == 3,flip(Turn,Turn1),setof([I,J,X,Y],knight(I,J,Board,X,Y,Turn1),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,Turn is P//10,P1 == 5,flip(Turn,Turn1),setof([I,J,X,Y],bishop(I,J,Board,X,Y,Turn1),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,Turn is P//10,P1 == 7,flip(Turn,Turn1),setof([I,J,X,Y],rook(I,J,Board,X,Y,Turn1),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,Turn is P//10,P1 == 9,flip(Turn,Turn1),setof([I,J,X,Y],queen(I,J,Board,X,Y,Turn1),Sout).
+findMove2(P,I,J,Board,Turn,Sout):-P1 is P mod 10,Turn is P//10,P1 == 0,flip(Turn,Turn1),setof([I,J,X,Y],king(I,J,Board,X,Y,Turn1),Sout).
 findMove2(P,I,J,Board,Turn,Sout):-Sout = [],!.
 
 flatten2([], []) :- !.
@@ -563,8 +564,8 @@ findMove(I,J,Board,V,D,Xd,Yd,Sout):-Xd is I,Yd is J,Sout is -1.%hack XXX
 lisSize([H|T],Cou):-lisSize(T,Cou1),Cou is Cou1+1.
 lisSize([],Cou):-Cou is 0.
 
-flip(V1,V):-1 == V mod 2,V1 is 2.
-flip(V1,V):-0 == V mod 2,V1 is 1.
+flip(V1,V):-1 is V1 mod 2,V is 2.
+flip(V1,V):-0 is V1 mod 2,V is 1.
 
 getBest(I,J,[H|T],Board,Xb,Yb,V,D,Score):-[X1,Y1] = H,move(I,J,X1,Y1,Board,Bnew),flip(V3,V),D1 is D-1,eval(Sc,V,Bnew),
                                           %iterateOverBoard(Sn,D1,_,_,_,_,Bnew,V3,1,1,Bnew),Sc1 is Sn+Sc,
