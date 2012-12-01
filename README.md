@@ -5,12 +5,12 @@ Hexagonal Chess in Prolog
 
 Usages:
 <br>To start the game, input these two commands in prolog terminal:
-<br><br>
-consult(board).
 <br>
-homePlay(2).
+    consult(board).
+<br>
+    homePlay(2).
 
-<br><br><br>
+<br>
 
 Authors:
 <br>
