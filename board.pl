@@ -374,8 +374,8 @@ minimax1(D,Position,MaxMin,Move,Value,Turn) :-
         %findall(M,move(Position,M),Moves),%%HOW TO DO THIS
         lopX(1,1,10,9,Position,Turn1,Moves),%,flatten2(Lis,Moves), %change here for testing!!
         D1 is D - 1,
-        MinMax is -MaxMin,
-        evaluate_and_choose(Moves,Position,D1,MinMax,(nil,-99),(Move,Value),Turn1).
+        MinMax is -MaxMin,write(D),
+        evaluate_and_choose(Moves,Position,D1,MinMax,(nil,-999999),(Move,Value),Turn1).
 
         %%%%%%%%%%%
 update(Move,Value,(Move1,Value1),(Move1,Value1)) :- Value =< Value1.
@@ -384,11 +384,12 @@ update(Move,Value,(Move1,Value1),(Move,Value)) :- Value > Value1.
 	  
 	  %%%%%%%%%%%%%%%%%%%%%%%%%
 	  /*
+	   big(B),lopX(1,1,10,9,B,2,M),evaluate_and_choose(M,B,4,-1,(nil,-9999999),(X,Y),2).
 	  
-	  
+	  evaluate_and_choose([[1,2,3,3],[1,3,1,1],[1,3,3,7],[1,3,4,9],[1,4,_288610,_288612],[1,4,_288619,_288621],[1,4,_288628,_288630],[1,4,_288637,_288639],[1,4,_288646,_288648],[1,4,_288655,_288657],[1,4,1,_288810],[1,4,1,_288891],[1,4,3,_288819],[1,4,3,_288828],[1,4,3,_288837],[1,4,3,_288846],[1,4,3,_288855],[1,4,3,_288864],[1,4,3,_288873],[1,4,3,_288882],[1,4,4,_288738],[1,4,4,_288747],[1,4,4,_288756],[1,4,4,_288765],[1,4,4,_288774],[1,4,4,_288783],[1,4,4,_288792],[1,4,4,_288801],[1,4,5,_288702],[1,4,5,_288711],[1,4,5,_288720],[1,4,5,_288729],[1,4,6,_288666],[1,4,6,_288675],[1,4,6,_288684],[1,4,6,_288693],[1,5,1,6],[1,7,3,6],[1,7,3,8],[1,8,1,6],[1,8,3,4],[1,8,4,2],[1,9,1,1],[1,9,1,6],[1,9,3,7],[1,9,4,6],[1,9,5,5],[1,9,6,4],[1,9,7,3],[2,1,3,1],[2,2,3,2],[2,2,4,2],[2,3,3,3],[2,3,4,3],[2,4,3,4],[2,4,4,4],[2,4,5,4],[2,5,3,5],[2,5,4,5],[2,5,5,5],[2,6,1,6],[2,6,3,6],[2,6,4,6],[2,6,5,6],[2,7,3,7],[2,7,4,7],[2,8,3,8],[2,8,4,8],[2,9,3,9]],[[27,13,15,19,10,1,13,15,17],[11,11,11,11,11,11,11,11,11],[1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1],[21,1,1,1,1,1,1,1,21],[1,21,1,1,1,1,1,21,27],[0,25,21,1,1,1,21,23,0],[0,0,23,21,1,21,25,0,0],[0,0,0,25,25,29,0,0,0],[0,0,0,0,20,0,0,0,0]],1,1,([1,2,3,1],-15),(_286134,_380419),1)
 	  */
 player2(Turn,Board,NewBoard,Turn2):-lopX(1,1,10,9,Board,Turn,Moves),%flatten2(Lis,Moves),
-                                    evaluate_and_choose(Moves,Board,4,-99,(nil,-999999),([I,J,X,Y],_),Turn),
+                                    evaluate_and_choose(Moves,Board,0,-1,(nil,-999999),([I,J,X,Y],_),Turn),
                                     % finAI(Moves,Board,[I,J,X,Y],T,Turn),
                                     % move(I,J,X,Y,Board,NewBoard),Turn2 is Turn +1.
                                     %chooseR(Turn,Board,Moves, _,[A,B,C,D]), 
@@ -597,7 +598,7 @@ eval(Score,T1,B):-flip(T1,T2),evalX(Score,T2,B,1).
 evalX(Score,T1,[H|T],X):-evalY(S1,T1,H,X,1),X1 is X+1,evalX(S2,T1,T,X1),Stmp is S1+S2,Score is Stmp. 
 evalX(Score,T,[],X):-S is 0,Score is S.
 
-evalY(S,T1,[H|T],W,V):-T1 is H//10,evalY(S1,T1,T,W,V),S is S1+H.
+evalY(S,T1,[H|T],W,V):-T1 is H//10,evalY(S1,T1,T,W,V),S is S1+1.
 evalY(S,T1,[H|T],W,V):-evalY(S1,T1,T,W,V),S is S1.
 evalY(S,T1,[],W,V):-S1 is 0,S = S1.
 /*
