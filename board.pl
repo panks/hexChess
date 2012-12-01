@@ -356,31 +356,29 @@ finAI([],Board,Best,T,Turn).
   
 evaluate_and_choose([[I,J,X,Y]|Moves],Position,D,MaxMin,Record,BestMove,Turn) :-
 	move(I,J,X,Y,Position,Position1),
-    minimax(D,Position1,MaxMin,MoveX,Value,Turn), 
+    minimax1(D,Position1,MaxMin,_,Value,Turn), 
 	update([I,J,X,Y],Value,Record,Record1),
  	evaluate_and_choose(Moves,Position,D,MaxMin,Record1,BestMove,Turn).
     
-evaluate_and_choose([[A,B,[],D]|Moves],Position,D,MaxMin,Record,Record,T).
-evaluate_and_choose([[A,B,C,[]]|Moves],Position,D,MaxMin,Record,Record,T).
-evaluate_and_choose([[A,B,[],[]]|Moves],Position,D,MaxMin,Record,Record,T).
+evaluate_and_choose([[A,B,[],D]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
+evaluate_and_choose([[A,B,C,[]]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
+evaluate_and_choose([[A,B,[],[]]|Moves],Position,D,MaxMin,Record,BestMove,T):-evaluate_and_choose(Moves,Position,D,MaxMin,Record,BestMove,Turn).
+evaluate_and_choose([],Position,D,MaxMin,Record,Record,T).	
 
  %%%%%%%%%%%%%%%%
-setTurn(T,To):-T==1,To is 2.
-setTurn(T,To):-T==2,To is 1.
-
-minimax(0,Position,MaxMin,Move,Value,Turn) :-eval(Score,Turn,B),Value is V * MaxMin.
+minimax1(0,Position,MaxMin,Move,Value,Turn) :-eval(Score,Turn,Position),Value is Score * MaxMin.
      
-minimax(D,Position,MaxMin,Move,Value) :-
-        setTurn(Turn,Turn1),
+minimax1(D,Position,MaxMin,Move,Value,Turn) :-
+        flip(Turn,Turn1),
         D > 0,
         %findall(M,move(Position,M),Moves),%%HOW TO DO THIS
-        lopX(1,1,10,9,Position,Turn1,Moves),%,flatten2(Lis,Moves),
+        lopX(1,1,3,2,Position,Turn1,Moves),%,flatten2(Lis,Moves),
         D1 is D - 1,
         MinMax is -MaxMin,
-        evaluate_and_choose(Moves,Position,D1,MinMax,(nil,-1000),(Move,Value),Turn1).
+        evaluate_and_choose(Moves,Position,D1,MinMax,(nil,-99),(Move,Value),Turn1).
 
         %%%%%%%%%%%
-update(Move,Value,(Move1,Value1),(Move1,Value1)) :- Value =< Value1.
+update(Move,Value,(Move1,Value),(Move1,Value1)) :- Value =< Value1.
 update(Move,Value,(Move1,Value1),(Move,Value)) :- Value > Value1.
 	  
 	  %%%%%%%%%%%%%%%%%%%%%%%%%
